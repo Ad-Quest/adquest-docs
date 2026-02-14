@@ -1,0 +1,172 @@
+---
+title: Интеграция виджета
+description: Подключение AdQuest Widget на ваш сайт
+sidebar:
+  label: Интеграция
+  order: 5
+---
+
+import { LinkTitleCard } from "~/components";
+
+# Интеграция виджета
+
+Руководство по подключению AdQuest Widget на ваш сайт.
+
+## Получение Site Key
+
+После [верификации сайта](/crm/publisher/sites/#добавление-сайта):
+
+1. Откройте детали сайта в панели управления
+2. Скопируйте Site Key (начинается с `pk_`)
+3. Скопируйте Secret Key для серверной валидации
+
+:::caution[Безопасность]
+Не публикуйте Secret Key в клиентском коде. Используйте его только на сервере.
+:::
+
+## Документация по интеграции
+
+Полная документация по интеграции AdQuest Widget доступна в отдельном разделе:
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+  <LinkTitleCard 
+    title="Быстрый старт" 
+    href="/adquest-widget/"
+  >
+    Базовая интеграция виджета на HTML, React, Vue
+  </LinkTitleCard>
+
+  <LinkTitleCard 
+    title="Примеры интеграции" 
+    href="/adquest-widget/patterns/"
+  >
+    Готовые решения для популярных фреймворков
+  </LinkTitleCard>
+
+  <LinkTitleCard 
+    title="Конфигурация" 
+    href="/adquest-widget/configuration/"
+  >
+    Параметры настройки виджета
+  </LinkTitleCard>
+
+  <LinkTitleCard 
+    title="API Reference" 
+    href="/adquest-widget/api/"
+  >
+    Полное описание API и методов
+  </LinkTitleCard>
+</div>
+
+## Краткий пример
+
+Минимальная интеграция виджета:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.css">
+</head>
+<body>
+  <form id="myForm" action="/submit" method="POST">
+    <input type="text" name="name" placeholder="Ваше имя" required>
+    
+    <div id="adquest-captcha"></div>
+    <input type="hidden" id="adquest-token" name="adquest_token">
+    
+    <button type="submit">Отправить</button>
+  </form>
+
+  <script src="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js"></script>
+  <script>
+    AdQuest.init({
+      siteKey: 'YOUR_SITE_KEY',
+      container: document.getElementById('adquest-captcha'),
+      onSuccess: function(token) {
+        document.getElementById('adquest-token').value = token;
+      }
+    });
+  </script>
+</body>
+</html>
+```
+
+Замените `YOUR_SITE_KEY` на ваш реальный Site Key из панели управления.
+
+## Проверка токена на сервере
+
+После получения токена на клиенте, проверьте его на сервере:
+
+```bash
+curl -X POST https://api.ad-quest.ru/verify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "token": "USER_TOKEN",
+    "siteKey": "YOUR_SITE_KEY",
+    "secretKey": "YOUR_SECRET_KEY"
+  }'
+```
+
+Ответ:
+
+```json
+{
+  "success": true,
+  "timestamp": "2024-02-15T10:30:00Z"
+}
+```
+
+Подробнее о проверке токенов см. [API Reference](/adquest-widget/api/).
+
+## Частые вопросы
+
+### Виджет не отображается
+
+Проверьте:
+- Правильность Site Key
+- Подключены ли CSS и JS файлы
+- Нет ли ошибок в консоли браузера
+- Верифицирован ли домен
+
+Подробнее см. [Решение проблем](/adquest-widget/gotchas/).
+
+### Как изменить внешний вид виджета?
+
+См. [Конфигурация виджета](/adquest-widget/configuration/).
+
+### Можно ли использовать на нескольких страницах?
+
+Да, один Site Key работает на всех страницах вашего домена.
+
+## Дополнительные ресурсы
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+  <LinkTitleCard 
+    title="Документация виджета" 
+    href="/adquest-widget/"
+  >
+    Полное руководство по AdQuest Widget
+  </LinkTitleCard>
+
+  <LinkTitleCard 
+    title="Управление сайтами" 
+    href="/crm/publisher/sites/"
+  >
+    Добавление и верификация сайтов
+  </LinkTitleCard>
+
+  <LinkTitleCard 
+    title="Статистика" 
+    href="/crm/publisher/statistics/"
+  >
+    Просмотр показов и доходов
+  </LinkTitleCard>
+
+  <LinkTitleCard 
+    title="Решение проблем" 
+    href="/adquest-widget/gotchas/"
+  >
+    Частые проблемы и их решения
+  </LinkTitleCard>
+</div>
