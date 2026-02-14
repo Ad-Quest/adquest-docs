@@ -1,18 +1,28 @@
 ---
 import Default from "@astrojs/starlight/components/Sidebar.astro";
 
-import { lookupProductTitle } from "~/util/sidebar";
+// Простая функция для получения заголовка раздела
+function getProductTitle(product: string): string {
+	const titles: Record<string, string> = {
+		"adquest-widget": "AdQuest Widget",
+		"crm": "AdQuest CRM",
+	};
+	return titles[product] || product;
+}
 
-const [product, module] = Astro.url.pathname.split("/").filter(Boolean);
+const [product] = Astro.url.pathname.split("/").filter(Boolean);
+const productTitle = product ? getProductTitle(product) : "AdQuest";
 ---
 
-<a href={"/" + product + "/"} class="flex items-center gap-2 px-1 no-underline">
-	<span class="text-xl text-black">
-		<strong>
-			{lookupProductTitle(product, module)}
-		</strong>
-	</span>
-</a>
+{product && (
+	<a href={"/" + product + "/"} class="flex items-center gap-2 px-1 no-underline">
+		<span class="text-xl text-black dark:text-white">
+			<strong>
+				{productTitle}
+			</strong>
+		</span>
+	</a>
+)}
 
 <!-- Search Input -->
 <div class="relative">

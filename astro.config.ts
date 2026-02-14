@@ -31,13 +31,40 @@ async function autogenSections() {
 		})
 	)
 		.filter((x) => x.isDirectory())
-		.map((x) => x.name);
-	return sections.map((x) => {
+		.map((x) => x.name)
+		.sort(); // Сортируем для предсказуемого порядка
+	
+	// Маппинг названий разделов
+	const labelMap: Record<string, string> = {
+		"adquest-widget": "AdQuest Widget",
+		"crm": "AdQuest CRM",
+	};
+	
+	// Определяем порядок разделов
+	const sectionOrder = ["adquest-widget", "crm"];
+	
+	// Сортируем секции по заданному порядку
+	const sortedSections = sections.sort((a, b) => {
+		const indexA = sectionOrder.indexOf(a);
+		const indexB = sectionOrder.indexOf(b);
+		
+		// Если оба в списке, сортируем по порядку
+		if (indexA !== -1 && indexB !== -1) {
+			return indexA - indexB;
+		}
+		// Если только один в списке, он идет первым
+		if (indexA !== -1) return -1;
+		if (indexB !== -1) return 1;
+		// Иначе алфавитный порядок
+		return a.localeCompare(b);
+	});
+	
+	return sortedSections.map((x) => {
 		return {
-			label: x,
+			label: labelMap[x] || x,
 			autogenerate: {
 				directory: x,
-				collapsed: x !== "adquest-widget", // Только adquest-widget развернут
+				collapsed: false, // Все разделы развернуты
 			},
 		};
 	});
@@ -120,10 +147,7 @@ export default defineConfig({
 					href: "https://github.com/adquest",
 				},
 			],
-			editLink: {
-				baseUrl:
-					"https://github.com/adquest/adquest-docs/edit/production/",
-			},
+			editLink: undefined, // Отключаем кнопку "Редактировать страницу"
 			components: {
 				Banner: "./src/components/overrides/Banner.astro",
 				Footer: "./src/components/overrides/Footer.astro",

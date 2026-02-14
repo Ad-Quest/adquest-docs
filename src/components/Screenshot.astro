@@ -1,0 +1,76 @@
+---
+/**
+ * Screenshot Component
+ * Компонент для отображения скриншотов с подписями
+ * Автоматически поддерживает zoom через starlight-image-zoom
+ */
+
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+}
+
+const { src, alt, caption, width, height } = Astro.props;
+---
+
+<figure class="screenshot-container">
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading="lazy"
+    class="screenshot-image"
+  />
+  {caption && (
+    <figcaption class="screenshot-caption">
+      {caption}
+    </figcaption>
+  )}
+</figure>
+
+<style>
+  .screenshot-container {
+    margin: 2rem 0;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: var(--sl-color-gray-6);
+  }
+
+  .screenshot-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: zoom-in;
+    transition: opacity 0.2s ease;
+  }
+
+  .screenshot-image:hover {
+    opacity: 0.9;
+  }
+
+  .screenshot-caption {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-2);
+    background: var(--sl-color-gray-6);
+    border-top: 1px solid var(--sl-color-gray-5);
+    text-align: center;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .screenshot-container {
+      border-color: var(--sl-color-gray-4);
+      background: var(--sl-color-gray-5);
+    }
+
+    .screenshot-caption {
+      background: var(--sl-color-gray-5);
+      border-top-color: var(--sl-color-gray-4);
+    }
+  }
+</style>

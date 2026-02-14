@@ -2,7 +2,6 @@
 import Default from "@astrojs/starlight/components/Page.astro";
 
 import { generateDescription, generateTableOfContents } from "~/util/props";
-import { getSidebar, flattenSidebar } from "~/util/sidebar";
 
 const props = Astro.locals.starlightRoute;
 const data = props.entry.data;
@@ -13,41 +12,8 @@ if (props.toc) {
 	props.toc.items = await generateTableOfContents(html);
 }
 
-if (props.hasSidebar) {
-	const group = await getSidebar(Astro);
-	props.sidebar = group.entries;
-
-	if (props.pagination) {
-		const flattened = flattenSidebar(props.sidebar);
-
-		const idx = flattened.findIndex((entry) => entry.isCurrent);
-
-		let prev = flattened[idx - 1];
-		let next = flattened[idx + 1];
-
-		if (prev?.attrs["data-group-label"]) {
-			prev = {
-				...prev,
-				label: prev.attrs["data-group-label"],
-			};
-		}
-
-		if (next?.attrs["data-group-label"]) {
-			next = {
-				...next,
-				label: next.attrs["data-group-label"],
-			};
-		}
-
-		if (data.prev !== false) {
-			props.pagination.prev = prev;
-		}
-
-		if (data.next !== false) {
-			props.pagination.next = next;
-		}
-	}
-}
+// Используем стандартный sidebar из Starlight
+// Убрали кастомную логику getSidebar, которая требует коллекцию directory
 
 if (data.description) {
 	data.description = await generateDescription({

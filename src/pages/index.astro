@@ -12,11 +12,11 @@ import {
 
 const frontmatter = {
 	title: "Документация AdQuest",
-	description: "Руководства и инструкции по продуктам AdQuest",
+	description: "Рекламная платформа нового поколения с монетизацией через интерактивные CAPTCHA",
 	template: "splash",
 	hero: {
-		title: "Добро пожаловать в AdQuest",
-		tagline: "Руководства и инструкции по продуктам AdQuest",
+		title: "Документация AdQuest",
+		tagline: "Рекламная платформа нового поколения с монетизацией через интерактивные CAPTCHA",
 		image: {
 			dark: HeroImageDark,
 			light: HeroImageLight,
@@ -28,33 +28,33 @@ const topCards = [
 	{
 		title: "Избранное",
 		links: [
-			{ text: "AdQuest Widget", href: "/adquest-widget/" },
-			{ text: "Быстрый старт", href: "/adquest-widget/#быстрый-старт" },
-			{ text: "Справочник API", href: "/adquest-widget/api/" },
+			{ text: "Быстрый старт для издателей", href: "/crm/publisher/" },
+			{ text: "Интеграция виджета", href: "/adquest-widget/" },
+			{ text: "API Reference", href: "/adquest-widget/api/" },
 		],
 		cta: {
-			text: "Вся документация",
-			href: "/adquest-widget/",
+			text: "Начать работу",
+			href: "/crm/",
 		},
 	},
 	{
 		title: "Начало работы",
 		links: [
-			{ text: "Конфигурация", href: "/adquest-widget/configuration/" },
-			{ text: "Примеры интеграции", href: "/adquest-widget/patterns/" },
-			{ text: "Решение проблем", href: "/adquest-widget/gotchas/" },
+			{ text: "Для издателей", href: "/crm/publisher/" },
+			{ text: "Для рекламодателей", href: "/crm/advertiser/" },
+			{ text: "Для агентств", href: "/crm/agency/" },
 		],
 		cta: {
 			text: "Смотреть руководства",
-			href: "/adquest-widget/",
+			href: "/crm/",
 		},
 	},
 	{
 		title: "Ресурсы",
 		links: [
-			{ text: "Панель управления", href: "https://dashboard.ad-quest.ru", target: "_blank" },
-			{ text: "Документация API", href: "/adquest-widget/api/" },
-			{ text: "Поддержка", href: "mailto:support@ad-quest.ru" },
+			{ text: "Регистрация и вход", href: "/crm/auth/" },
+			{ text: "Примеры интеграции", href: "/adquest-widget/patterns/" },
+			{ text: "Решение проблем", href: "/adquest-widget/gotchas/" },
 		],
 		cta: {
 			text: "Получить помощь",
@@ -64,13 +64,13 @@ const topCards = [
 	{
 		title: "Продукты",
 		links: [
+			{ text: "AdQuest CRM", href: "/crm/" },
 			{ text: "AdQuest Widget", href: "/adquest-widget/" },
-			{ text: "Защита от ботов", href: "/adquest-widget/#защитные-механизмы" },
-			{ text: "Монетизация", href: "/adquest-widget/#монетизация" },
+			{ text: "Панель управления", href: "https://ad-quest.ru/auth/login", target: "_blank" },
 		],
 		cta: {
 			text: "Обзор продуктов",
-			href: "/adquest-widget/",
+			href: "/crm/",
 		},
 	},
 ];
@@ -108,54 +108,84 @@ const topCards = [
 	<div class="my-16">
 		<h2 class="text-3xl font-bold mb-6 text-center">Быстрый старт</h2>
 		<p class="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-			Интегрируйте AdQuest Widget на ваш сайт за 4 простых шага
+			Начните работу с AdQuest за несколько простых шагов
 		</p>
 		
-		<div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-			<h3 class="text-xl font-semibold mb-4">Базовая интеграция (HTML)</h3>
-			
-			<div class="space-y-4">
-				<div>
-					<p class="text-sm text-gray-600 dark:text-gray-400 mb-2">1. Подключите CSS</p>
-					<pre class="bg-white dark:bg-gray-800 p-4 rounded border border-gray-200 dark:border-gray-700 overflow-x-auto"><code class="language-html">&lt;link rel="stylesheet" href="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.css"&gt;</code></pre>
-				</div>
-				
-				<div>
-					<p class="text-sm text-gray-600 dark:text-gray-400 mb-2">2. Добавьте контейнер</p>
-					<pre class="bg-white dark:bg-gray-800 p-4 rounded border border-gray-200 dark:border-gray-700 overflow-x-auto"><code class="language-html">&lt;div id="adquest-captcha"&gt;&lt;/div&gt;</code></pre>
-				</div>
-				
-				<div>
-					<p class="text-sm text-gray-600 dark:text-gray-400 mb-2">3. Подключите JS</p>
-					<pre class="bg-white dark:bg-gray-800 p-4 rounded border border-gray-200 dark:border-gray-700 overflow-x-auto"><code class="language-html">&lt;script src="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js"&gt;&lt;/script&gt;</code></pre>
-				</div>
-				
-				<div>
-					<p class="text-sm text-gray-600 dark:text-gray-400 mb-2">4. Инициализируйте виджет</p>
-					<pre class="bg-white dark:bg-gray-800 p-4 rounded border border-gray-200 dark:border-gray-700 overflow-x-auto"><code class="language-javascript">&lt;script&gt;
-AdQuest.init(&#123;
-  siteKey: 'YOUR_SITE_KEY',
-  container: document.getElementById('adquest-captcha'),
-  onSuccess: (token) =&gt; &#123;
-    console.log('Токен:', token);
-  &#125;
-&#125;);
-&lt;/script&gt;</code></pre>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<!-- Для издателей -->
+			<div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+				<h3 class="text-xl font-semibold mb-4">Для издателей</h3>
+				<ol class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+					<li><strong>1.</strong> Зарегистрируйтесь в <a href="https://ad-quest.ru/auth/register" target="_blank" class="text-black dark:text-white hover:underline">панели управления</a></li>
+					<li><strong>2.</strong> Добавьте свой сайт</li>
+					<li><strong>3.</strong> Получите Site Key</li>
+					<li><strong>4.</strong> Встройте виджет на сайт</li>
+					<li><strong>5.</strong> Начните получать доход</li>
+				</ol>
+				<div class="mt-6">
+					<a href="/crm/publisher/" class="btn-brand inline-flex items-center justify-center rounded-lg px-6 py-2 font-semibold no-underline text-white">
+						Руководство для издателей →
+					</a>
 				</div>
 			</div>
 			
-			<div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-				<p class="text-sm text-gray-600 dark:text-gray-400 mb-3">
-					<strong>Готово!</strong> Виджет готов к использованию. Получите ваш <code class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded text-sm">siteKey</code> в <a href="https://dashboard.ad-quest.ru" target="_blank" class="text-black dark:text-white hover:underline">панели управления</a>.
-				</p>
-				<div class="flex gap-4">
-					<a href="/adquest-widget/#быстрый-старт" class="btn-brand inline-flex items-center justify-center rounded-lg px-6 py-2 font-semibold no-underline text-white">
-						Подробная документация →
-					</a>
-					<a href="/adquest-widget/patterns/" class="inline-flex items-center justify-center rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-transparent px-6 py-2 font-semibold no-underline hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white transition-all">
-						Примеры для фреймворков
+			<!-- Для рекламодателей -->
+			<div class="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+				<h3 class="text-xl font-semibold mb-4">Для рекламодателей</h3>
+				<ol class="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+					<li><strong>1.</strong> Зарегистрируйтесь в <a href="https://ad-quest.ru/auth/register" target="_blank" class="text-black dark:text-white hover:underline">панели управления</a></li>
+					<li><strong>2.</strong> Пополните баланс</li>
+					<li><strong>3.</strong> Создайте рекламную кампанию</li>
+					<li><strong>4.</strong> Настройте таргетинг</li>
+					<li><strong>5.</strong> Запустите и отслеживайте результаты</li>
+				</ol>
+				<div class="mt-6">
+					<a href="/crm/advertiser/" class="btn-brand inline-flex items-center justify-center rounded-lg px-6 py-2 font-semibold no-underline text-white">
+						Руководство для рекламодателей →
 					</a>
 				</div>
+			</div>
+		</div>
+		
+		<!-- Интеграция виджета -->
+		<div class="mt-8 bg-gray-50 dark:bg-gray-900 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+			<h3 class="text-xl font-semibold mb-4">Интеграция AdQuest Widget</h3>
+			<p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+				Базовая интеграция на любой сайт за 4 простых шага:
+			</p>
+			
+			<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+				<div>
+					<p class="text-gray-600 dark:text-gray-400 mb-2"><strong>1.</strong> Подключите CSS</p>
+					<pre class="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700 overflow-x-auto text-xs"><code>&lt;link rel="stylesheet" href="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.css"&gt;</code></pre>
+				</div>
+				
+				<div>
+					<p class="text-gray-600 dark:text-gray-400 mb-2"><strong>2.</strong> Добавьте контейнер</p>
+					<pre class="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700 overflow-x-auto text-xs"><code>&lt;div id="adquest-captcha"&gt;&lt;/div&gt;</code></pre>
+				</div>
+				
+				<div>
+					<p class="text-gray-600 dark:text-gray-400 mb-2"><strong>3.</strong> Подключите JS</p>
+					<pre class="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700 overflow-x-auto text-xs"><code>&lt;script src="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js"&gt;&lt;/script&gt;</code></pre>
+				</div>
+				
+				<div>
+					<p class="text-gray-600 dark:text-gray-400 mb-2"><strong>4.</strong> Инициализируйте</p>
+					<pre class="bg-white dark:bg-gray-800 p-3 rounded border border-gray-200 dark:border-gray-700 overflow-x-auto text-xs"><code>AdQuest.init(&#123;
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha')
+&#125;);</code></pre>
+				</div>
+			</div>
+			
+			<div class="mt-6 flex gap-4">
+				<a href="/adquest-widget/" class="btn-brand inline-flex items-center justify-center rounded-lg px-6 py-2 font-semibold no-underline text-white">
+					Полная документация →
+				</a>
+				<a href="/adquest-widget/patterns/" class="inline-flex items-center justify-center rounded-lg border-2 border-gray-300 dark:border-gray-600 bg-transparent px-6 py-2 font-semibold no-underline hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white transition-all">
+					Примеры для фреймворков
+				</a>
 			</div>
 		</div>
 	</div>
@@ -164,31 +194,31 @@ AdQuest.init(&#123;
 		<hr />
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
 			<LinkTitleCard 
+				title="AdQuest CRM" 
+				href="/crm/"
+			>
+				Панель управления для издателей, рекламодателей и агентств. Управляйте сайтами, кампаниями и получайте доход.
+			</LinkTitleCard>
+
+			<LinkTitleCard 
 				title="AdQuest Widget" 
 				href="/adquest-widget/"
 			>
-				Защита от ботов с монетизацией. Показывайте рекламу вместо CAPTCHA и зарабатывайте на своем трафике.
+				JavaScript виджет для защиты от ботов с монетизацией. Показывайте рекламу вместо CAPTCHA.
 			</LinkTitleCard>
 
 			<LinkTitleCard 
-				title="Руководство по быстрому старту" 
-				href="/adquest-widget/#быстрый-старт"
+				title="Для издателей" 
+				href="/crm/publisher/"
 			>
-				Начните работу с AdQuest Widget за несколько минут. Простая интеграция с любым сайтом или приложением.
+				Добавьте сайт, получите Site Key и начните зарабатывать на показах рекламы.
 			</LinkTitleCard>
 
 			<LinkTitleCard 
-				title="Справочник API" 
-				href="/adquest-widget/api/"
+				title="Для рекламодателей" 
+				href="/crm/advertiser/"
 			>
-				Полная документация JavaScript API с TypeScript типами и серверными эндпоинтами.
-			</LinkTitleCard>
-
-			<LinkTitleCard 
-				title="Примеры интеграции" 
-				href="/adquest-widget/patterns/"
-			>
-				Готовые примеры для React, Vue, Next.js и других популярных фреймворков.
+				Создавайте кампании, настраивайте таргетинг и привлекайте целевую аудиторию.
 			</LinkTitleCard>
 		</div>
 	</div>

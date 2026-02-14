@@ -1,8 +1,144 @@
 ---
-title: Welcome
-description: UI Components Documentation
+title: AdQuest
+description: Документация рекламной платформы AdQuest - виджеты, CRM и API
+template: splash
+hero:
+  title: Документация AdQuest
+  tagline: Рекламная платформа нового поколения с монетизацией через интерактивные CAPTCHA
+  image:
+    file: ../../assets/logo_white.svg
+  actions:
+    - text: Начать работу
+      link: /crm/
+      icon: right-arrow
+      variant: primary
+    - text: Войти в панель
+      link: https://ad-quest.ru/auth/login
+      icon: external
+      variant: secondary
 ---
 
-# Welcome
+import { Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-This is a UI components library documentation.
+## Избранное
+
+<CardGrid>
+  <LinkCard 
+    title="Быстрый старт для издателей" 
+    href="/crm/publisher/"
+    description="Добавьте сайт, получите Site Key и начните зарабатывать"
+  />
+  <LinkCard 
+    title="Интеграция виджета" 
+    href="/adquest-widget/"
+    description="Встройте AdQuest Widget на ваш сайт за 5 минут"
+  />
+  <LinkCard 
+    title="API Reference" 
+    href="/adquest-widget/api/"
+    description="Полная документация JavaScript API и endpoints"
+  />
+  <LinkCard 
+    title="Создание кампаний" 
+    href="/crm/advertiser/"
+    description="Запустите рекламную кампанию и привлекайте клиентов"
+  />
+</CardGrid>
+
+## Начало работы
+
+<CardGrid>
+  <Card title="Для издателей" icon="document">
+    Монетизируйте трафик вашего сайта через рекламные CAPTCHA
+    
+    - Добавьте сайт в панель управления
+    - Получите уникальный Site Key
+    - Встройте виджет на страницы
+    - Получайте доход с каждого показа
+    
+    [Подробнее →](/crm/publisher/)
+  </Card>
+
+  <Card title="Для рекламодателей" icon="rocket">
+    Размещайте рекламу в момент взаимодействия пользователя
+    
+    - Создайте рекламную кампанию
+    - Загрузите креативы
+    - Настройте таргетинг
+    - Отслеживайте эффективность
+    
+    [Подробнее →](/crm/advertiser/)
+  </Card>
+
+  <Card title="Для агентств" icon="star">
+    Управляйте клиентами и получайте комиссионные
+    
+    - Добавляйте клиентов
+    - Настраивайте комиссии
+    - Просматривайте статистику
+    - Создавайте отчеты
+    
+    [Подробнее →](/crm/agency/)
+  </Card>
+
+  <Card title="Интеграция виджета" icon="puzzle">
+    Простая интеграция на любой сайт
+    
+    - Базовая HTML интеграция
+    - Фреймворки (React, Vue, Angular)
+    - Серверная валидация токенов
+    - Настройка внешнего вида
+    
+    [Подробнее →](/adquest-widget/)
+  </Card>
+</CardGrid>
+
+## Продукты
+
+<CardGrid>
+  <LinkCard 
+    title="AdQuest CRM" 
+    href="/crm/"
+    description="Панель управления для издателей, рекламодателей и агентств"
+  />
+  <LinkCard 
+    title="AdQuest Widget" 
+    href="/adquest-widget/"
+    description="JavaScript виджет для защиты от ботов с монетизацией"
+  />
+</CardGrid>
+
+## Ресурсы
+
+<CardGrid stagger>
+  <LinkCard 
+    title="Регистрация" 
+    href="/crm/auth/"
+    description="Создайте аккаунт и начните работу с платформой"
+  />
+  <LinkCard 
+    title="Аутентификация" 
+    href="/crm/auth/"
+    description="Вход, безопасность и управление аккаунтом"
+  />
+  <LinkCard 
+    title="Примеры интеграции" 
+    href="/adquest-widget/patterns/"
+    description="Готовые решения для популярных фреймворков"
+  />
+  <LinkCard 
+    title="Решение проблем" 
+    href="/adquest-widget/gotchas/"
+    description="Частые ошибки и способы их устранения"
+  />
+  <LinkCard 
+    title="Конфигурация виджета" 
+    href="/adquest-widget/configuration/"
+    description="Все опции настройки AdQuest Widget"
+  />
+  <LinkCard 
+    title="Панель управления" 
+    href="https://ad-quest.ru/auth/login"
+    description="Войдите в CRM для управления сайтами и кампаниями"
+  />
+</CardGrid>

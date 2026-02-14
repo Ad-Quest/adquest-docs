@@ -9,6 +9,7 @@ export { Icon as AstroIcon } from "astro-icon/components";
 export { default as Details } from "./Details.astro";
 export { default as InlineBadge } from "./InlineBadge.astro";
 export { default as LinkTitleCard } from "./LinkTitleCard.astro";
+export { default as Screenshot } from "./Screenshot.astro";
 export { default as TypeScriptExample } from "./TypeScriptExample.astro";
 
 // Additional components that exist and may be useful
