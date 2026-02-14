@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /dashboard/
+Disallow: /publisher/
+Disallow: /advertiser/
+Disallow: /agency/
+Disallow: /admin/
+Disallow: /login
+Disallow: /dashboard-selection
+Disallow: /test-*
+
+# Allow important pages
+Allow: /
+Allow: /api/
+
+# Sitemap
+Sitemap: https://ad-quest.ru/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

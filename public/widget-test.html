@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdQuest Widget Test - Full Integration</title>
+    
+    <!-- Include CSS -->
+    <link rel="stylesheet" href="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        .status {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .status.info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        
+        button {
+            padding: 10px 20px;
+            margin: 10px 5px;
+            cursor: pointer;
+        }
+        
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>AdQuest Widget - Full Integration Test</h1>
+    <p>Полная интеграция с серверной валидацией токена</p>
+    
+    <!-- Widget container -->
+    <div id="adquest-captcha"></div>
+    
+    <!-- Status display -->
+    <div id="status" class="status"></div>
+    
+    <!-- Token display -->
+    <div id="token-display" style="display: none;">
+        <h3>Полученный токен:</h3>
+        <pre id="token-value"></pre>
+        <button onclick="verifyToken()">Проверить токен на сервере</button>
+    </div>
+    
+    <!-- Verification result -->
+    <div id="verification-result" style="display: none;">
+        <h3>Результат серверной проверки:</h3>
+        <pre id="verification-data"></pre>
+    </div>
+    
+    <!-- Include JavaScript -->
+    <script src="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js"></script>
+    <script type="module">
+        // Wait for DOM to be fully loaded
+        globalThis.addEventListener('DOMContentLoaded', function() {
+            console.log('='.repeat(80));
+            console.log('[DOM] DOMContentLoaded event fired');
+            console.log('='.repeat(80));
+        });
+        
+        // Check if script loaded
+        console.log('='.repeat(80));
+        console.log('[SCRIPT] Script tag executed');
+        console.log('[SCRIPT] globalThis.AdQuest exists:', globalThis.AdQuest !== undefined);
+        console.log('[SCRIPT] globalThis.AdQuest value:', globalThis.AdQuest);
+        console.log('='.repeat(80));
+        
+        // Wait a bit for script to load
+        setTimeout(function() {
+            console.log('='.repeat(80));
+            console.log('[DELAYED] Checking AdQuest after 1 second');
+            console.log('[DELAYED] globalThis.AdQuest exists:', globalThis.AdQuest !== undefined);
+            console.log('[DELAYED] globalThis.AdQuest value:', globalThis.AdQuest);
+            
+            if (globalThis.AdQuest === undefined) {
+                console.error('[DELAYED] ERROR: AdQuest is still not defined!');
+                console.error('[DELAYED] Check if script loaded correctly');
+                console.error('[DELAYED] Script URL: https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js');
+                showStatus('error', 'Ошибка: Виджет AdQuest не загрузился. Проверьте консоль.');
+            }
+            console.log('='.repeat(80));
+        }, 1000);
+        
+        let currentToken = null;
+        
+        function showStatus(type, message) {
+            const statusDiv = document.getElementById('status');
+            statusDiv.className = 'status ' + type;
+            statusDiv.style.display = 'block';
+            statusDiv.innerHTML = message;
+            console.log('[STATUS]', type.toUpperCase(), ':', message);
+        }
+        
+        function showToken(token) {
+            currentToken = token;
+            document.getElementById('token-value').textContent = token;
+            document.getElementById('token-display').style.display = 'block';
+        }
+        
+        async function verifyToken() {
+            if (!currentToken) {
+                showStatus('error', 'Токен не найден');
+                return;
+            }
+            
+            console.log('='.repeat(80));
+            console.log('[VERIFY] Starting server-side verification');
+            console.log('[VERIFY] Token:', currentToken);
+            console.log('='.repeat(80));
+            
+            showStatus('info', 'Отправка токена на сервер для проверки...');
+            
+            try {
+                const response = await fetch('/api/verify-captcha', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token: currentToken })
+                });
+                
+                console.log('[VERIFY] Response status:', response.status);
+                console.log('[VERIFY] Response ok:', response.ok);
+                
+                const data = await response.json();
+                console.log('[VERIFY] Response data:', data);
+                
+                document.getElementById('verification-data').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('verification-result').style.display = 'block';
+                
+                if (response.ok && data.success) {
+                    showStatus('success', 'Токен успешно проверен на сервере! Верификация пройдена.');
+                    console.log('[VERIFY] SUCCESS - Token is valid');
+                } else {
+                    showStatus('error', 'Ошибка проверки токена: ' + (data.error || 'Unknown error'));
+                    console.error('[VERIFY] ERROR - Token validation failed:', data);
+                }
+            } catch (error) {
+                console.error('[VERIFY] Network error:', error);
+                showStatus('error', 'Ошибка сети: ' + error.message);
+            }
+            
+            console.log('='.repeat(80));
+        }
+        
+        // Make verifyToken available globally for onclick handler
+        globalThis.verifyToken = verifyToken;
+        
+        // Initialize widget with top-level await
+        console.log('='.repeat(80));
+        console.log('[INIT] AdQuest Widget Initialization');
+        console.log('[INIT] Checking if AdQuest is available...');
+        
+        if (AdQuest === undefined) {
+            console.error('[INIT] ERROR: AdQuest is not defined!');
+            console.error('[INIT] Widget script may not have loaded');
+            showStatus('error', 'Ошибка: AdQuest не определен. Скрипт виджета не загрузился.');
+            console.log('='.repeat(80));
+        } else {
+            console.log('[INIT] AdQuest is available');
+            console.log('[INIT] AdQuest object:', AdQuest);
+            console.log('[INIT] AdQuest.init type:', typeof AdQuest.init);
+            console.log('[INIT] Public Key: pk_3029ceacddd39250ed30a49b91387399');
+            console.log('[INIT] API Base URL: https://api.ad-quest.ru');
+            console.log('='.repeat(80));
+            
+            try {
+                const container = document.getElementById('adquest-captcha');
+                console.log('[INIT] Container element:', container);
+                console.log('[INIT] Container exists:', container !== null);
+                
+                const config = {
+                    siteKey: 'pk_3029ceacddd39250ed30a49b91387399',
+                    container: container,
+                    apiBaseURL: 'https://api.ad-quest.ru',
+                    onSuccess: async function(token) {
+                        console.log('='.repeat(80));
+                        console.log('[SUCCESS] Widget verification successful');
+                        console.log('[SUCCESS] Token received:', token);
+                        console.log('[SUCCESS] Token length:', token.length);
+                        console.log('[SUCCESS] Token type:', typeof token);
+                        console.log('='.repeat(80));
+                        
+                        showStatus('success', 'Верификация виджета успешна! Токен получен.');
+                        showToken(token);
+                        
+                        // Автоматически проверяем токен на сервере
+                        console.log('[SUCCESS] Automatically verifying token on server...');
+                        await verifyToken();
+                    },
+                    onError: function(error) {
+                        console.log('='.repeat(80));
+                        console.error('[ERROR] Widget verification failed');
+                        console.error('[ERROR] Error:', error);
+                        console.error('[ERROR] Error type:', typeof error);
+                        console.error('[ERROR] Error keys:', error ? Object.keys(error) : 'null');
+                        console.log('='.repeat(80));
+                        
+                        showStatus('error', 'Ошибка верификации: ' + (error.message || error));
+                    }
+                };
+                
+                console.log('[INIT] Config object:', JSON.stringify({
+                    siteKey: config.siteKey,
+                    apiBaseURL: config.apiBaseURL,
+                    hasContainer: config.container !== null,
+                    containerTagName: config.container ? config.container.tagName : 'null',
+                    hasOnSuccess: typeof config.onSuccess === 'function',
+                    hasOnError: typeof config.onError === 'function'
+                }, null, 2));
+                
+                console.log('[INIT] Calling AdQuest.init()...');
+                const widget = AdQuest.init(config);
+                
+                console.log('[INIT] Widget initialized:', widget);
+                console.log('[INIT] Widget type:', typeof widget);
+                console.log('[INIT] Is Promise:', widget instanceof Promise);
+                
+                if (widget instanceof Promise) {
+                    console.log('[INIT] Widget returned a Promise, waiting for resolution...');
+                    try {
+                        const resolvedWidget = await widget;
+                        console.log('[INIT] Promise resolved:', resolvedWidget);
+                        console.log('[INIT] Resolved widget type:', typeof resolvedWidget);
+                    } catch (error) {
+                        console.error('[INIT] Promise rejected:', error);
+                        console.error('[INIT] Error message:', error.message);
+                        console.error('[INIT] Error stack:', error.stack);
+                        showStatus('error', 'Ошибка Promise: ' + error.message);
+                    }
+                }
+                
+                console.log('='.repeat(80));
+            } catch (error) {
+                console.error('[INIT] Exception during initialization:', error);
+                console.error('[INIT] Error message:', error.message);
+                console.error('[INIT] Error stack:', error.stack);
+                showStatus('error', 'Ошибка инициализации: ' + error.message);
+                console.log('='.repeat(80));
+            }
+        }
+    </script>
+    
+    <hr style="margin: 40px 0;">
+</body>
+</html>
