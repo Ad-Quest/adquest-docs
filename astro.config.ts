@@ -95,8 +95,11 @@ export default defineConfig({
 	},
 	integrations: [
 		starlight({
+			title: "AdQuest",
 			logo: {
-				src: "./src/assets/logo.svg",
+				light: "~/assets/logo_dark.svg",
+				dark: "~/assets/logo_white.svg",
+				replacesTitle: true,
 			},
 			favicon: "/favicon.png",
 			defaultLocale: "root",
