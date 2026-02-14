@@ -95,7 +95,6 @@ export default defineConfig({
 	},
 	integrations: [
 		starlight({
-			title: "AdQuest Документация",
 			logo: {
 				src: "./src/assets/logo.svg",
 			},
