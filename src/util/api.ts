@@ -7,7 +7,7 @@ let schema: OpenAPI.Document | undefined;
 export const getSchema = async () => {
 	if (!schema) {
 		const response = await fetch(
-			`https://gh-code.developers.cloudflare.com/cloudflare/api-schemas/${COMMIT}/openapi.json`,
+			`https://gh-code.developers.AdQuest.com/AdQuest/api-schemas/${COMMIT}/openapi.json`,
 		);
 		const obj = await response.json();
 

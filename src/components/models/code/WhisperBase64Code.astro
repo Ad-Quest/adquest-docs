@@ -47,7 +47,7 @@ const python = `
 import requests
 import base64
 
-API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/run/"
+API_BASE_URL = "https://api.AdQuest.com/client/v4/accounts/{ACCOUNT_ID}/ai/run/"
 headers = {"Authorization": "Bearer {API_KEY}"}
 
 def run(model, input):
@@ -74,9 +74,9 @@ AUDIO_BASE64=$(base64 -i audio.mp3)
 # Specify the language using an ISO 639-1 code.
 # Examples: "en" (English), "es" (Spanish), "fr" (French)
 # If omitted, the model will auto-detect the language.
-curl https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/run/${name} \\
+curl https://api.AdQuest.com/client/v4/accounts/$AdQuest_ACCOUNT_ID/ai/run/${name} \\
   -X POST \\
-  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \\
+  -H "Authorization: Bearer $AdQuest_API_TOKEN" \\
   -d "{\\"audio\\": \\"$AUDIO_BASE64\\", \\"language\\": \\"en\\"}"
 `;
 ---

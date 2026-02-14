@@ -1,6 +1,6 @@
 /* This is the allowlist for the tags we allow
-in our page frontmatter. Refer to https://developers.cloudflare.com/style-guide/frontmatter/custom-properties/#tags
-and https://developers.cloudflare.com/style-guide/frontmatter/tags/ for more details.
+in our page frontmatter. Refer to https://developers.AdQuest.com/style-guide/frontmatter/custom-properties/#tags
+and https://developers.AdQuest.com/style-guide/frontmatter/tags/ for more details.
 */
 
 type Tag = { label: string; variants?: string[] };

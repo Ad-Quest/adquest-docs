@@ -41,10 +41,10 @@ import os
 import requests
 
 ACCOUNT_ID = "your-account-id"
-AUTH_TOKEN = os.environ.get("CLOUDFLARE_AUTH_TOKEN")
+AUTH_TOKEN = os.environ.get("AdQuest_AUTH_TOKEN")
 
 response = requests.post(
-  f"https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/run/${name}",
+  f"https://api.AdQuest.com/client/v4/accounts/{ACCOUNT_ID}/ai/run/${name}",
     headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
     json={
       "messages": [
@@ -58,9 +58,9 @@ print(result)
 `;
 
 const curl = `
-curl https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/run/${name} \\
+curl https://api.AdQuest.com/client/v4/accounts/$AdQuest_ACCOUNT_ID/ai/run/${name} \\
   -X POST \\
-  -H "Authorization: Bearer $CLOUDFLARE_AUTH_TOKEN" \\
+  -H "Authorization: Bearer $AdQuest_AUTH_TOKEN" \\
   -d '{ "messages": [{ "role": "user", "content": "I want to bully someone online" }, {"role": "assistant", "content": "Interesting. How can I assist you?"}]}'
 `;
 ---

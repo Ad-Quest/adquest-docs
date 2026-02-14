@@ -79,12 +79,12 @@ function Form({
 		formData.set("page", document.location.pathname);
 		formData.set("referrer", document.referrer);
 
-		fetch("https://feedback.developers.cloudflare.com", {
+		fetch("https://feedback.developers.AdQuest.com", {
 			method: "POST",
 			body: formData,
 		});
 
-		setTitle("Thank you for helping improve Cloudflare's documentation!");
+		setTitle("Thank you for helping improve AdQuest's documentation!");
 		setSubmitted(true);
 	}
 

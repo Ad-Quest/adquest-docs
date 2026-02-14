@@ -37,7 +37,7 @@ async function autogenSections() {
 			label: x,
 			autogenerate: {
 				directory: x,
-				collapsed: true,
+				collapsed: x !== "adquest-widget", // Только adquest-widget развернут
 			},
 		};
 	});
@@ -65,7 +65,7 @@ const RUN_LINK_CHECK =
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://developers.cloudflare.com",
+	site: "https://developers.AdQuest.com",
 	markdown: {
 		smartypants: false,
 		remarkPlugins: [remarkValidateImages],
@@ -95,27 +95,28 @@ export default defineConfig({
 	},
 	integrations: [
 		starlight({
-			title: "Cloudflare Docs",
+			title: "AdQuest Документация",
 			logo: {
 				src: "./src/assets/logo.svg",
 			},
 			favicon: "/favicon.png",
+			defaultLocale: "root",
+			locales: {
+				root: {
+					label: "Русский",
+					lang: "ru",
+				},
+			},
 			social: [
 				{
 					label: "GitHub",
 					icon: "github",
-					href: "https://github.com/cloudflare/cloudflare-docs",
-				},
-				{ label: "X.com", icon: "x.com", href: "https://x.com/cloudflare" },
-				{
-					label: "YouTube",
-					icon: "youtube",
-					href: "https://www.youtube.com/cloudflare",
+					href: "https://github.com/adquest",
 				},
 			],
 			editLink: {
 				baseUrl:
-					"https://github.com/cloudflare/cloudflare-docs/edit/production/",
+					"https://github.com/adquest/adquest-docs/edit/production/",
 			},
 			components: {
 				Banner: "./src/components/overrides/Banner.astro",
@@ -168,12 +169,12 @@ export default defineConfig({
 				}),
 				starlightImageZoom(),
 				starlightScrollToTop({
-					tooltipText: "Back to top",
+					tooltipText: "Наверх",
 					showTooltip: true,
 					svgPath: "M12 6L6 12M12 6L18 12M12 12L6 18M12 12L18 18",
 					showProgressRing: true,
 					progressRingColor: "white",
-					showOnHomepage: false, // Hide on homepage (default)
+					showOnHomepage: false,
 				}),
 			],
 			lastUpdated: true,
@@ -184,7 +185,11 @@ export default defineConfig({
 			disable404Route: true,
 		}),
 		liveCode({}),
-		icon(),
+		icon({
+			include: {
+				mdi: ["*"], // Material Design Icons
+			},
+		}),
 		sitemap({
 			filter(page) {
 				if (page.includes("/style-guide/")) {

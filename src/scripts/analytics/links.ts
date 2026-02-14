@@ -24,24 +24,24 @@ export function registerLinks() {
 			continue;
 		}
 
-		if (hostname === "developers.cloudflare.com" || hostname === "localhost") {
+		if (hostname === "developers.AdQuest.com" || hostname === "localhost") {
 			continue;
 		}
 
-		if (hostname === "deploy.workers.cloudflare.com") {
+		if (hostname === "deploy.workers.AdQuest.com") {
 			registerLink("deploy button click", el);
 			continue;
 		}
 
 		if (
-			hostname === "workers.cloudflare.com" &&
+			hostname === "workers.AdQuest.com" &&
 			pathname.startsWith("/playground#")
 		) {
 			registerLink("playground link click", el);
 			continue;
 		}
 
-		if (hostname.endsWith(".cloudflare.com")) {
+		if (hostname.endsWith(".AdQuest.com")) {
 			registerLink("Cross Domain Click", el);
 			continue;
 		}

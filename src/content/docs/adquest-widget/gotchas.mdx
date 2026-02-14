@@ -1,0 +1,296 @@
+---
+title: Troubleshooting
+description: Частые ошибки, отладка и решение проблем с AdQuest Widget
+sidebar:
+  order: 5
+---
+
+import { Details, InlineBadge } from "~/components";
+
+# Troubleshooting
+
+Решение частых проблем и ошибок при работе с AdQuest Widget.
+
+## Частые ошибки
+
+### Виджет не отображается
+
+<Details header="Проверьте загрузку скриптов">
+
+Убедитесь, что скрипты загружены правильно:
+
+```javascript
+// Проверка в консоли браузера
+console.log(typeof window.AdQuest); // Должно быть 'object'
+```
+
+Если `undefined`, проверьте:
+- Правильность URL скрипта
+- Отсутствие блокировки Content Security Policy
+- Отсутствие блокировки AdBlock
+
+</Details>
+
+<Details header="Проверьте Site Key">
+
+```javascript
+// Неправильно - Site Key не указан
+AdQuest.init({
+  container: document.getElementById('adquest-captcha')
+});
+
+// Правильно
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha')
+});
+```
+
+</Details>
+
+<Details header="Проверьте контейнер">
+
+```javascript
+const container = document.getElementById('adquest-captcha');
+console.log(container); // Не должно быть null
+
+if (!container) {
+  console.error('Контейнер не найден!');
+}
+```
+
+</Details>
+
+### Ошибка "Invalid Site Key"
+
+**Причины:**
+- Неверный Site Key
+- Site Key для другого домена
+- Использование production ключа на localhost
+
+**Решение:**
+
+```javascript
+// Используйте тестовый ключ для разработки
+const SITE_KEY = process.env.NODE_ENV === 'production'
+  ? 'prod_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+  : 'test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+
+AdQuest.init({
+  siteKey: SITE_KEY,
+  container: document.getElementById('adquest-captcha')
+});
+```
+
+### Токен не проходит проверку на сервере
+
+<Details header="Проверьте время жизни токена">
+
+Токены действительны 1 час по умолчанию:
+
+```javascript
+// Увеличьте время жизни токена
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  tokenTTL: 7200 // 2 часа
+});
+```
+
+</Details>
+
+<Details header="Проверьте одноразовое использование">
+
+Каждый токен можно использовать только один раз:
+
+```javascript
+// Неправильно - повторное использование токена
+const token = AdQuest.getToken();
+await verifyToken(token); // Первая проверка - OK
+await verifyToken(token); // Вторая проверка - FAIL
+
+// Правильно - получите новый токен
+AdQuest.reset();
+// Пользователь проходит проверку заново
+```
+
+</Details>
+
+### CORS ошибки
+
+<Details header="Добавьте домен в dashboard">
+
+1. Откройте [Dashboard](https://dashboard.ad-quest.ru)
+2. Перейдите в настройки Site Key
+3. Добавьте ваш домен в список разрешенных
+
+</Details>
+
+<Details header="Проверьте apiBaseURL">
+
+```javascript
+// Убедитесь, что используете правильный URL
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  apiBaseURL: 'https://api.ad-quest.ru' // Правильный URL
+});
+```
+
+</Details>
+
+## Отладка
+
+### Включение debug режима
+
+```javascript
+// Добавьте в консоль браузера
+localStorage.setItem('adquest_debug', 'true');
+
+// Перезагрузите страницу
+location.reload();
+```
+
+Вы увидите подробные логи в консоли:
+
+```
+[AdQuest] Initializing widget...
+[AdQuest] Site Key: YOUR_SITE_KEY
+[AdQuest] Mode: advertisement
+[AdQuest] Loading advertisement...
+[AdQuest] Token received: eyJ...
+```
+
+### Проверка состояния виджета
+
+```javascript
+// В консоли браузера
+console.log(AdQuest.getToken()); // Текущий токен или null
+```
+
+### Мониторинг событий
+
+```javascript
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  
+  onLoad: () => {
+    console.log('✓ Виджет загружен');
+  },
+  
+  onSuccess: (token) => {
+    console.log('✓ Токен получен:', token);
+  },
+  
+  onError: (error) => {
+    console.error('✗ Ошибка:', error);
+  },
+  
+  onExpire: () => {
+    console.warn('⚠ Токен истек');
+  }
+});
+```
+
+## Производительность
+
+### Ленивая загрузка
+
+Загружайте виджет только когда он нужен:
+
+```javascript
+// Загрузка при клике на форму
+document.getElementById('loginForm').addEventListener('focus', () => {
+  if (!window.AdQuest) {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js';
+    script.async = true;
+    document.body.appendChild(script);
+  }
+}, { once: true });
+```
+
+### Предзагрузка
+
+Используйте `<link rel="preload">` для ускорения загрузки:
+
+```html
+<link rel="preload" 
+      href="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js" 
+      as="script">
+<link rel="preload" 
+      href="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.css" 
+      as="style">
+```
+
+## Безопасность
+
+### Content Security Policy
+
+Добавьте в CSP:
+
+```html
+<meta http-equiv="Content-Security-Policy" 
+      content="
+        script-src 'self' https://cdn.ad-quest.ru;
+        connect-src 'self' https://api.ad-quest.ru;
+        style-src 'self' https://cdn.ad-quest.ru;
+      ">
+```
+
+### Защита от XSS
+
+Никогда не вставляйте токен в HTML:
+
+```javascript
+// Неправильно - уязвимость XSS
+document.getElementById('token').innerHTML = token;
+
+// Правильно - отправьте на сервер
+fetch('/api/verify', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ token })
+});
+```
+
+## Ограничения
+
+### Rate Limits
+
+| Действие | Лимит | Период |
+|----------|-------|--------|
+| Инициализация виджета | 10 | 1 минута |
+| Проверка токена | 100 | 1 минута |
+| Получение рекламы | 50 | 1 минута |
+
+При превышении лимита вы получите ошибку `RATE_LIMIT_EXCEEDED`.
+
+### Размер токена
+
+Токены имеют размер ~500-1000 байт. Учитывайте это при передаче в URL или cookies.
+
+### Поддержка браузеров
+
+| Браузер | Минимальная версия |
+|---------|-------------------|
+| Chrome | 90+ |
+| Firefox | 88+ |
+| Safari | 14+ |
+| Edge | 90+ |
+
+## Получение помощи
+
+Если проблема не решена:
+
+1. Проверьте [API документацию](/adquest-widget/api/)
+2. Изучите [примеры интеграции](/adquest-widget/patterns/)
+3. Напишите в поддержку: support@ad-quest.ru
+4. Откройте issue на GitHub
+
+## Следующие шаги
+
+- [Конфигурация](/adquest-widget/configuration/) - настройка виджета
+- [API Reference](/adquest-widget/api/) - полная документация API
+- [Примеры интеграции](/adquest-widget/patterns/) - готовые решения

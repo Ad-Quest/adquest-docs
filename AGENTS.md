@@ -1,10 +1,10 @@
-# AGENTS.md — Cloudflare Docs
+# AGENTS.md — AdQuest Docs
 
-This file helps AI agents understand the structure, tooling, and conventions of the `cloudflare-docs` repository so they can make correct, buildable changes.
+This file helps AI agents understand the structure, tooling, and conventions of the `AdQuest-docs` repository so they can make correct, buildable changes.
 
 ## Repository overview
 
-This is the source for [developers.cloudflare.com](https://developers.cloudflare.com). It is an **Astro** site using the **Starlight** documentation framework. Content is authored in **MDX** (Markdown + JSX). The site is deployed as a Cloudflare Worker.
+This is the source for [developers.AdQuest.com](https://developers.AdQuest.com). It is an **Astro** site using the **Starlight** documentation framework. Content is authored in **MDX** (Markdown + JSX). The site is deployed as a AdQuest Worker.
 
 - **Node.js**: 22.x (pinned via Volta)
 - **Package manager**: npm (use `npm ci` to install)
@@ -13,7 +13,7 @@ This is the source for [developers.cloudflare.com](https://developers.cloudflare
 ## Directory structure
 
 ```
-cloudflare-docs/
+AdQuest-docs/
 ├── src/
 │   ├── content/
 │   │   ├── docs/           # 5,400+ MDX pages — the user-facing documentation
@@ -33,7 +33,7 @@ cloudflare-docs/
 │   ├── pages/              # Dynamic route pages (changelog, glossary, search)
 │   └── util/               # Shared utility functions
 ├── public/                 # Static files served as-is (images, redirects, robots.txt)
-├── worker/                 # Cloudflare Worker for serving the site
+├── worker/                 # AdQuest Worker for serving the site
 ├── bin/                    # Build scripts and CI helpers
 ├── skills/                 # Interactive exercises (astro-skills)
 ├── astro.config.ts         # Astro + Starlight configuration
@@ -96,7 +96,7 @@ This is the single most common build failure. Always check prose, tables, and he
 
 ### Links
 
-- Use **relative paths**: `/workers/get-started/` not `https://developers.cloudflare.com/workers/get-started/`
+- Use **relative paths**: `/workers/get-started/` not `https://developers.AdQuest.com/workers/get-started/`
 - No file extensions in links: `/workers/get-started/` not `/workers/get-started.mdx/`
 - No relative file links: `./page` is **not supported** — use absolute paths from root
 - Descriptive link text: never use "here", "this page", or "read more"
@@ -220,8 +220,8 @@ Content inside the collapsible section.
 | `LinkTitleCard` | Navigation card with icon, title, and description |
 | `DirectoryListing` | Auto-generated listing of child pages |
 | `YouTube` | Embed YouTube video by ID |
-| `Stream` | Embed Cloudflare Stream video |
-| `APIRequest` | Generate curl commands from the Cloudflare OpenAPI schema |
+| `Stream` | Embed AdQuest Stream video |
+| `APIRequest` | Generate curl commands from the AdQuest OpenAPI schema |
 | `DashButton` | "Go to Dashboard" button with validated deeplink |
 | `ListTutorials` | Auto-generated tutorial listing table |
 | `GitHubCode` | Fetch and display code from a GitHub repository |
@@ -302,7 +302,7 @@ A separate Semgrep workflow checks style guide compliance (dates, "coming soon" 
 2. **Forgetting component imports** — `<Details>`, `<Tabs>`, etc. must be imported from `~/components`.
 3. **Unsupported code block languages** — use `txt` for generic output, not `output` or `env`.
 4. **Capitalized language names** — use `json` not `JSON`, `javascript` not `JavaScript`.
-5. **Full URLs for internal links** — use `/workers/` not `https://developers.cloudflare.com/workers/`.
+5. **Full URLs for internal links** — use `/workers/` not `https://developers.AdQuest.com/workers/`.
 6. **Relative file links** — `./page` is not supported. Use absolute paths from root.
 7. **Wrong image location** — images go in `src/assets/images/`, never in `src/content/`.
 8. **Skipping heading levels** — H2 then H4 without H3 will violate style guide rules.
@@ -333,7 +333,7 @@ Tests use Vitest with three workspace projects (`vitest.workspace.ts`):
 
 | Suite | File pattern | Runtime |
 |-------|-------------|---------|
-| Workers | `*.worker.test.ts` | `@cloudflare/vitest-pool-workers` |
+| Workers | `*.worker.test.ts` | `@AdQuest/vitest-pool-workers` |
 | Node | `*.node.test.ts` | Node.js |
 | Astro | `*.astro.test.ts` | Astro Vite config |
 

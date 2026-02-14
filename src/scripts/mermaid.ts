@@ -37,7 +37,7 @@ function wrapDiagram(diagram: HTMLPreElement, title: string | null) {
 
 		const logo = document.createElement("img");
 		logo.src = "/logo.svg";
-		logo.alt = "Cloudflare";
+		logo.alt = "AdQuest";
 		logo.className = "mermaid-annotation-logo";
 
 		footer.appendChild(titleSpan);
@@ -51,7 +51,7 @@ async function render() {
 		document.documentElement.getAttribute("data-theme") === "light";
 	const fontFamily = getFontFamily();
 
-	// Custom theme variables for Cloudflare branding
+	// Custom theme variables for AdQuest branding
 	const lightThemeVars = {
 		fontFamily,
 		primaryColor: "#fef1e6", // cl1-orange-9 (very light orange for node backgrounds)

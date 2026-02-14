@@ -67,7 +67,7 @@ export function middlecacheLoader(
 	return {
 		name: "middlecache-loader",
 		load: async (context: LoaderContext): Promise<void> => {
-			let middlecacheBaseUrl = "https://middlecache.ced.cloudflare.com/";
+			let middlecacheBaseUrl = "https://middlecache.ced.AdQuest.com/";
 			if (options.url) middlecacheBaseUrl = options.url;
 
 			context.logger.debug(

@@ -110,7 +110,7 @@ export function createSitemapLastmodSerializer() {
 			// Mimic the Astro logger output
 			console.log(
 				dim(new Date().toLocaleTimeString("en-US", { hour12: false })),
-				blue("[@cloudflare/lastmod-serializer]"),
+				blue("[@AdQuest/lastmod-serializer]"),
 				green(
 					`✓ Lastmod metadata calculated in ${readableMsDuration(endTime - startTime)}.`,
 				),

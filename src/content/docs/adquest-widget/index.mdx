@@ -1,0 +1,117 @@
+---
+title: AdQuest Widget
+description: Справочник по интеграции AdQuest Widget - решения для защиты от ботов с возможностью монетизации трафика
+sidebar:
+  order: 1
+---
+
+import { LinkTitleCard, Details } from "~/components";
+
+# AdQuest Widget - Справочник по интеграции
+
+Руководство по внедрению AdQuest Widget - решения для защиты от ботов с возможностью монетизации трафика.
+
+## Обзор
+
+AdQuest Widget объединяет защиту от ботов и монетизацию трафика. Виджет определяет легитимных пользователей и показывает им релевантную рекламу вместо традиционной CAPTCHA.
+
+## Режимы работы
+
+| Режим | Описание | Применение |
+|-------|----------|------------|
+| **Advertisement** | Показ рекламы с вопросом | Монетизация + защита, основной режим |
+| **Captcha** | Fallback CAPTCHA (checkbox) | Когда нет рекламы или высокий риск |
+| **Invisible** | Автоматическая проверка | Для легитимных пользователей |
+
+## Быстрый старт
+
+### Базовая интеграция (HTML)
+
+```html
+<!-- 1. Подключите CSS -->
+<link rel="stylesheet" href="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.css">
+
+<!-- 2. Добавьте контейнер -->
+<div id="adquest-captcha"></div>
+
+<!-- 3. Подключите JS -->
+<script src="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js"></script>
+
+<!-- 4. Инициализируйте виджет -->
+<script>
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  onSuccess: (token) => {
+    console.log('Токен:', token);
+  }
+});
+</script>
+```
+
+## Разделы документации
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
+  <LinkTitleCard 
+    title="Конфигурация" 
+    href="/adquest-widget/configuration/"
+  >
+    Настройка виджета, опции, загрузка скриптов
+  </LinkTitleCard>
+
+  <LinkTitleCard 
+    title="API Reference" 
+    href="/adquest-widget/api/"
+  >
+    JavaScript API, endpoints, TypeScript типы
+  </LinkTitleCard>
+
+  <LinkTitleCard 
+    title="Примеры интеграции" 
+    href="/adquest-widget/patterns/"
+  >
+    Интеграция с формами, примеры для фреймворков
+  </LinkTitleCard>
+
+  <LinkTitleCard 
+    title="Troubleshooting" 
+    href="/adquest-widget/gotchas/"
+  >
+    Частые ошибки, отладка, ограничения
+  </LinkTitleCard>
+</div>
+
+## Ключевые особенности
+
+- **Токен действителен:** 1 час (настраивается через `tokenTTL`)
+- **Одноразовое использование:** Каждый токен можно проверить только один раз
+- **Серверная проверка обязательна:** Клиентская проверка недостаточна
+- **localStorage кэширование:** Токен сохраняется для повторных посещений
+- **Автоматическое скрытие:** Опция `hideOnSuccess` скрывает виджет после успеха
+
+<Details header="Защитные механизмы">
+
+AdQuest включает многоуровневую защиту от автоматизированных запросов и злоупотреблений:
+
+- Анализ поведения пользователя
+- Проверка IP-адреса и геолокации
+- Fingerprinting браузера
+- Rate limiting на уровне API
+- Защита от replay-атак
+
+</Details>
+
+## Монетизация
+
+AdQuest позволяет монетизировать трафик через показ рекламы:
+
+- Реклама показывается вместо CAPTCHA
+- Пользователь отвечает на вопрос о рекламе
+- Вы получаете оплату за просмотры (CPV)
+- Если рекламы нет - показывается обычная CAPTCHA
+
+## Дополнительные ресурсы
+
+- [Dashboard](https://dashboard.ad-quest.ru) - управление ключами и настройками
+- [API документация](/adquest-widget/api/) - полное описание endpoints
+- [Примеры интеграции](/adquest-widget/patterns/) - готовые решения для популярных фреймворков

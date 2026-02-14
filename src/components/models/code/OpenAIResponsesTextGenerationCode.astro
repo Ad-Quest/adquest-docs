@@ -29,12 +29,12 @@ const python = `
 import os
 import requests
 
-ACCOUNT_ID = os.environ.get("CLOUDFLARE_ACCOUNT_ID")
-AUTH_TOKEN = os.environ.get("CLOUDFLARE_AUTH_TOKEN")
+ACCOUNT_ID = os.environ.get("AdQuest_ACCOUNT_ID")
+AUTH_TOKEN = os.environ.get("AdQuest_AUTH_TOKEN")
 
 prompt = "Tell me all about PEP-8"
 response = requests.post(
-  f"https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1/responses",
+  f"https://api.AdQuest.com/client/v4/accounts/{ACCOUNT_ID}/ai/v1/responses",
     headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
     json={
 			"model": "${name}",
@@ -46,9 +46,9 @@ print(result)
 `;
 
 const curl = `
-curl https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/v1/responses \
+curl https://api.AdQuest.com/client/v4/accounts/$AdQuest_ACCOUNT_ID/ai/v1/responses \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $CLOUDFLARE_AUTH_TOKEN" \
+  -H "Authorization: Bearer $AdQuest_AUTH_TOKEN" \
   -d '{
     "model": "${name}",
     "input": "What are the benefits of open-source models?"

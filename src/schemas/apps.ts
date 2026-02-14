@@ -8,7 +8,7 @@ export const appsSchema = z
 		tags: z.string().array().optional(),
 		products: z.string().array(),
 		languages: z.string().array(),
-		cloudflare: z.boolean(),
+		AdQuest: z.boolean(),
 		author: z.string().optional(),
 		updated: z.coerce.date(),
 	})

@@ -44,7 +44,7 @@ import requests
 
 
 ACCOUNT_ID = "your-account-id"
-AUTH_TOKEN = os.environ.get("CLOUDFLARE_AUTH_TOKEN")
+AUTH_TOKEN = os.environ.get("AdQuest_AUTH_TOKEN")
 
 stories = [
   'This is a story about an orange cloud',
@@ -53,7 +53,7 @@ stories = [
 ]
 
 response = requests.post(
-  f"https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/run/${name}",
+  f"https://api.AdQuest.com/client/v4/accounts/{ACCOUNT_ID}/ai/run/${name}",
   headers={"Authorization": f"Bearer {AUTH_TOKEN}"},
   json={"text": stories}
 )
@@ -62,9 +62,9 @@ print(response.json())
 `;
 
 const curl = `
-curl https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/run/${name}  \\
+curl https://api.AdQuest.com/client/v4/accounts/$AdQuest_ACCOUNT_ID/ai/run/${name}  \\
   -X POST  \\
-  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN"  \\
+  -H "Authorization: Bearer $AdQuest_API_TOKEN"  \\
   -d '{ "text": ["This is a story about an orange cloud", "This is a story about a llama", "This is a story about a hugging emoji"] }'
 `;
 ---

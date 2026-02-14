@@ -1,18 +1,13 @@
-declare global {
-	interface Window {
-		zaraz?: {
-			track: Track;
-		};
-	}
-}
-
-type Track = (event: string, properties?: Record<string, any>) => void;
-
-export const track: Track = (event, properties) => {
-	if (!window.zaraz) {
-		console.log("zaraz.track:", event, properties);
+export function track(eventName: string, properties?: Record<string, unknown>): void {
+	if (typeof window === "undefined") {
 		return;
 	}
 
-	window.zaraz.track(event, properties);
-};
+	try {
+		if (typeof (window as any).zaraz !== "undefined") {
+			(window as any).zaraz.track(eventName, properties);
+		}
+	} catch (error) {
+		console.error("Zaraz tracking error:", error);
+	}
+}

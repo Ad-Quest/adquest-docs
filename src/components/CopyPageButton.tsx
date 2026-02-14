@@ -62,7 +62,7 @@ export default function CopyPageButton() {
 	const handleExternalAI = (url: string, vendor: string) => {
 		const externalAIURL = url;
 		const indexMdUrl = new URL("index.md", window.location.href).toString();
-		const prompt = `Read this page from the Cloudflare docs: ${encodeURIComponent(indexMdUrl)} and answer questions about the content.`;
+		const prompt = `Read this page from the AdQuest docs: ${encodeURIComponent(indexMdUrl)} and answer questions about the content.`;
 		track("clicked copy page button", {
 			value: `${vendor} ai`,
 		});

@@ -1,0 +1,488 @@
+---
+title: Примеры интеграции
+description: Готовые примеры интеграции AdQuest Widget с популярными фреймворками
+sidebar:
+  order: 4
+---
+
+import { Tabs, TabItem, Details, TypeScriptExample } from "~/components";
+
+# Примеры интеграции
+
+Готовые решения для интеграции AdQuest Widget с популярными фреймворками и библиотеками.
+
+## Интеграция с формами
+
+### Базовая форма входа
+
+```html
+<form id="loginForm">
+  <input type="email" name="email" required placeholder="Email">
+  <input type="password" name="password" required placeholder="Пароль">
+  
+  <div id="adquest-captcha"></div>
+  
+  <button type="submit" id="submitBtn" disabled>Войти</button>
+</form>
+
+<script src="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js"></script>
+<script>
+let verificationToken = null;
+
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  hideOnSuccess: true,
+  
+  onSuccess: (token) => {
+    verificationToken = token;
+    document.getElementById('submitBtn').disabled = false;
+  },
+  
+  onError: (error) => {
+    console.error('Ошибка:', error);
+    document.getElementById('submitBtn').disabled = true;
+  }
+});
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const formData = {
+    email: e.target.email.value,
+    password: e.target.password.value,
+    adquest_token: verificationToken
+  };
+  
+  const response = await fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData)
+  });
+  
+  if (response.ok) {
+    window.location.href = '/dashboard';
+  } else {
+    alert('Ошибка входа');
+    AdQuest.reset();
+  }
+});
+</script>
+```
+
+## React
+
+<TypeScriptExample filename="src/components/AdQuestWidget.tsx">
+
+```typescript
+import { useEffect, useRef, useState } from 'react';
+
+interface AdQuestWidgetProps {
+  siteKey: string;
+  onSuccess: (token: string) => void;
+  onError?: (error: Error) => void;
+}
+
+export function AdQuestWidget({ siteKey, onSuccess, onError }: AdQuestWidgetProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    // Загрузка скрипта
+    const script = document.createElement('script');
+    script.src = 'https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js';
+    script.async = true;
+    script.onload = () => setIsLoaded(true);
+    document.body.appendChild(script);
+
+    // Загрузка стилей
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.css';
+    document.head.appendChild(link);
+
+    return () => {
+      document.body.removeChild(script);
+      document.head.removeChild(link);
+      if (window.AdQuest) {
+        window.AdQuest.destroy();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isLoaded && containerRef.current && window.AdQuest) {
+      window.AdQuest.init({
+        siteKey,
+        container: containerRef.current,
+        onSuccess,
+        onError
+      });
+    }
+  }, [isLoaded, siteKey, onSuccess, onError]);
+
+  return <div ref={containerRef} />;
+}
+
+// Использование
+function LoginForm() {
+  const [token, setToken] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!token) {
+      alert('Пожалуйста, пройдите проверку');
+      return;
+    }
+
+    // Отправка формы с токеном
+    await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token })
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="email" required />
+      <input type="password" required />
+      
+      <AdQuestWidget
+        siteKey="YOUR_SITE_KEY"
+        onSuccess={setToken}
+        onError={(error) => console.error(error)}
+      />
+      
+      <button type="submit" disabled={!token}>
+        Войти
+      </button>
+    </form>
+  );
+}
+```
+
+</TypeScriptExample>
+
+## Vue 3
+
+<Tabs>
+<TabItem label="Composition API">
+
+```vue
+<template>
+  <div>
+    <form @submit.prevent="handleSubmit">
+      <input v-model="email" type="email" required />
+      <input v-model="password" type="password" required />
+      
+      <div ref="containerRef"></div>
+      
+      <button type="submit" :disabled="!token">
+        Войти
+      </button>
+    </form>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue';
+
+const props = defineProps<{
+  siteKey: string;
+}>();
+
+const emit = defineEmits<{
+  success: [token: string];
+  error: [error: Error];
+}>();
+
+const containerRef = ref<HTMLDivElement>();
+const token = ref<string | null>(null);
+const email = ref('');
+const password = ref('');
+
+onMounted(() => {
+  // Загрузка скрипта
+  const script = document.createElement('script');
+  script.src = 'https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js';
+  script.async = true;
+  script.onload = () => {
+    if (containerRef.value && window.AdQuest) {
+      window.AdQuest.init({
+        siteKey: props.siteKey,
+        container: containerRef.value,
+        onSuccess: (t: string) => {
+          token.value = t;
+          emit('success', t);
+        },
+        onError: (error: Error) => {
+          emit('error', error);
+        }
+      });
+    }
+  };
+  document.body.appendChild(script);
+});
+
+onUnmounted(() => {
+  if (window.AdQuest) {
+    window.AdQuest.destroy();
+  }
+});
+
+const handleSubmit = async () => {
+  if (!token.value) return;
+  
+  await fetch('/api/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: email.value,
+      password: password.value,
+      adquest_token: token.value
+    })
+  });
+};
+</script>
+```
+
+</TabItem>
+<TabItem label="Options API">
+
+```vue
+<template>
+  <div>
+    <form @submit.prevent="handleSubmit">
+      <input v-model="email" type="email" required />
+      <input v-model="password" type="password" required />
+      
+      <div ref="container"></div>
+      
+      <button type="submit" :disabled="!token">
+        Войти
+      </button>
+    </form>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    siteKey: {
+      type: String,
+      required: true
+    }
+  },
+  
+  data() {
+    return {
+      token: null,
+      email: '',
+      password: ''
+    };
+  },
+  
+  mounted() {
+    const script = document.createElement('script');
+    script.src = 'https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js';
+    script.async = true;
+    script.onload = () => {
+      if (this.$refs.container && window.AdQuest) {
+        window.AdQuest.init({
+          siteKey: this.siteKey,
+          container: this.$refs.container,
+          onSuccess: (token) => {
+            this.token = token;
+            this.$emit('success', token);
+          },
+          onError: (error) => {
+            this.$emit('error', error);
+          }
+        });
+      }
+    };
+    document.body.appendChild(script);
+  },
+  
+  beforeUnmount() {
+    if (window.AdQuest) {
+      window.AdQuest.destroy();
+    }
+  },
+  
+  methods: {
+    async handleSubmit() {
+      if (!this.token) return;
+      
+      await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: this.email,
+          password: this.password,
+          adquest_token: this.token
+        })
+      });
+    }
+  }
+};
+</script>
+```
+
+</TabItem>
+</Tabs>
+
+## Next.js
+
+<TypeScriptExample filename="components/AdQuestWidget.tsx">
+
+```typescript
+'use client';
+
+import { useEffect, useRef } from 'react';
+
+interface AdQuestWidgetProps {
+  siteKey: string;
+  onSuccess: (token: string) => void;
+}
+
+export function AdQuestWidget({ siteKey, onSuccess }: AdQuestWidgetProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const loadWidget = async () => {
+      // Динамическая загрузка только на клиенте
+      if (typeof window === 'undefined') return;
+
+      const script = document.createElement('script');
+      script.src = 'https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js';
+      script.async = true;
+      
+      script.onload = () => {
+        if (containerRef.current && window.AdQuest) {
+          window.AdQuest.init({
+            siteKey,
+            container: containerRef.current,
+            onSuccess
+          });
+        }
+      };
+      
+      document.body.appendChild(script);
+    };
+
+    loadWidget();
+
+    return () => {
+      if (window.AdQuest) {
+        window.AdQuest.destroy();
+      }
+    };
+  }, [siteKey, onSuccess]);
+
+  return <div ref={containerRef} />;
+}
+```
+
+</TypeScriptExample>
+
+<Details header="Использование в Server Actions">
+
+```typescript
+// app/actions.ts
+'use server';
+
+export async function verifyAndLogin(formData: FormData) {
+  const token = formData.get('adquest_token') as string;
+  
+  // Проверка токена
+  const response = await fetch('https://api.ad-quest.ru/api/v1/verify-token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ token })
+  });
+  
+  const result = await response.json();
+  
+  if (!result.valid) {
+    throw new Error('Invalid verification');
+  }
+  
+  // Продолжить с логином...
+}
+```
+
+</Details>
+
+## Серверная проверка
+
+### Node.js / Express
+
+```javascript
+const express = require('express');
+const app = express();
+
+app.use(express.json());
+
+app.post('/api/login', async (req, res) => {
+  const { email, password, adquest_token } = req.body;
+  
+  // Проверка токена
+  const verification = await fetch('https://api.ad-quest.ru/api/v1/verify-token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      token: adquest_token,
+      ip: req.ip
+    })
+  });
+  
+  const result = await verification.json();
+  
+  if (!result.valid) {
+    return res.status(403).json({ error: 'Invalid verification' });
+  }
+  
+  // Продолжить с логином...
+  res.json({ success: true });
+});
+```
+
+### Python / FastAPI
+
+```python
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+import httpx
+
+app = FastAPI()
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+    adquest_token: str
+
+@app.post("/api/login")
+async def login(request: LoginRequest):
+    # Проверка токена
+    async with httpx.AsyncClient() as client:
+        response = await client.post(
+            'https://api.ad-quest.ru/api/v1/verify-token',
+            json={'token': request.adquest_token}
+        )
+        result = response.json()
+    
+    if not result.get('valid'):
+        raise HTTPException(status_code=403, detail='Invalid verification')
+    
+    # Продолжить с логином...
+    return {'success': True}
+```
+
+## Следующие шаги
+
+- [API Reference](/adquest-widget/api/) - полная документация API
+- [Troubleshooting](/adquest-widget/gotchas/) - решение проблем
+- [Конфигурация](/adquest-widget/configuration/) - настройка виджета

@@ -1,0 +1,336 @@
+---
+title: API Reference
+description: JavaScript API и серверные endpoints AdQuest Widget
+sidebar:
+  order: 3
+---
+
+import { Details, InlineBadge } from "~/components";
+
+# API Reference
+
+Полная документация по JavaScript API и серверным endpoints.
+
+## JavaScript API
+
+### AdQuest.init()
+
+Инициализация виджета.
+
+```typescript
+AdQuest.init(config: AdQuestConfig): AdQuestInstance
+```
+
+**Параметры:**
+
+```typescript
+interface AdQuestConfig {
+  siteKey: string;
+  container: HTMLElement;
+  apiBaseURL?: string;
+  mode?: 'advertisement' | 'captcha' | 'invisible';
+  theme?: 'light' | 'dark';
+  language?: 'ru' | 'en';
+  hideOnSuccess?: boolean;
+  tokenTTL?: number;
+  onSuccess?: (token: string) => void;
+  onError?: (error: Error) => void;
+  onExpire?: () => void;
+  onLoad?: () => void;
+}
+```
+
+**Возвращает:** `AdQuestInstance`
+
+**Пример:**
+
+```javascript
+const widget = AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  onSuccess: (token) => {
+    console.log('Token:', token);
+  }
+});
+```
+
+### AdQuest.reset()
+
+Сброс виджета к начальному состоянию.
+
+```typescript
+AdQuest.reset(): void
+```
+
+**Пример:**
+
+```javascript
+// Сбросить виджет после ошибки
+AdQuest.reset();
+```
+
+### AdQuest.getToken()
+
+Получение текущего токена.
+
+```typescript
+AdQuest.getToken(): string | null
+```
+
+**Возвращает:** Токен или `null` если токен не получен.
+
+**Пример:**
+
+```javascript
+const token = AdQuest.getToken();
+if (token) {
+  console.log('Current token:', token);
+}
+```
+
+### AdQuest.execute() <InlineBadge preset="beta" />
+
+Программный запуск проверки (только для invisible mode).
+
+```typescript
+AdQuest.execute(): Promise<string>
+```
+
+**Возвращает:** Promise с токеном.
+
+**Пример:**
+
+```javascript
+try {
+  const token = await AdQuest.execute();
+  console.log('Token:', token);
+} catch (error) {
+  console.error('Verification failed:', error);
+}
+```
+
+### AdQuest.destroy()
+
+Удаление виджета и очистка ресурсов.
+
+```typescript
+AdQuest.destroy(): void
+```
+
+**Пример:**
+
+```javascript
+// Очистка при размонтировании компонента
+AdQuest.destroy();
+```
+
+## Server API
+
+### POST /api/v1/verify-token
+
+Проверка токена на сервере.
+
+**Endpoint:** `https://api.ad-quest.ru/api/v1/verify-token`
+
+**Метод:** `POST`
+
+**Headers:**
+
+```
+Content-Type: application/json
+```
+
+**Request Body:**
+
+```typescript
+interface VerifyTokenRequest {
+  token: string;      // Токен от виджета
+  ip?: string;        // IP адрес пользователя (опционально)
+  userAgent?: string; // User-Agent (опционально)
+}
+```
+
+**Response:**
+
+```typescript
+interface VerifyTokenResponse {
+  valid: boolean;           // Токен валиден
+  timestamp: string;        // Время проверки (ISO 8601)
+  score?: number;           // Оценка риска (0-100)
+  action?: string;          // Действие пользователя
+  hostname?: string;        // Домен где был получен токен
+  error?: string;           // Сообщение об ошибке
+}
+```
+
+**Примеры:**
+
+<Details header="Node.js / Express">
+
+```javascript
+app.post('/api/login', async (req, res) => {
+  const { email, password, adquest_token } = req.body;
+
+  // Проверка токена
+  const verification = await fetch('https://api.ad-quest.ru/api/v1/verify-token', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      token: adquest_token,
+      ip: req.ip,
+      userAgent: req.headers['user-agent']
+    })
+  });
+
+  const result = await verification.json();
+
+  if (!result.valid) {
+    return res.status(403).json({ error: 'Invalid verification' });
+  }
+
+  // Продолжить с логином...
+});
+```
+
+</Details>
+
+<Details header="Python / Flask">
+
+```python
+import requests
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.json
+    adquest_token = data.get('adquest_token')
+    
+    # Проверка токена
+    response = requests.post(
+        'https://api.ad-quest.ru/api/v1/verify-token',
+        json={
+            'token': adquest_token,
+            'ip': request.remote_addr,
+            'userAgent': request.headers.get('User-Agent')
+        }
+    )
+    
+    result = response.json()
+    
+    if not result.get('valid'):
+        return jsonify({'error': 'Invalid verification'}), 403
+    
+    # Продолжить с логином...
+```
+
+</Details>
+
+<Details header="PHP">
+
+```php
+<?php
+$adquest_token = $_POST['adquest_token'];
+
+// Проверка токена
+$response = file_get_contents('https://api.ad-quest.ru/api/v1/verify-token', false, stream_context_create([
+    'http' => [
+        'method' => 'POST',
+        'header' => 'Content-Type: application/json',
+        'content' => json_encode([
+            'token' => $adquest_token,
+            'ip' => $_SERVER['REMOTE_ADDR'],
+            'userAgent' => $_SERVER['HTTP_USER_AGENT']
+        ])
+    ]
+]));
+
+$result = json_decode($response, true);
+
+if (!$result['valid']) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Invalid verification']);
+    exit;
+}
+
+// Продолжить с логином...
+?>
+```
+
+</Details>
+
+## TypeScript типы
+
+```typescript
+// Конфигурация виджета
+interface AdQuestConfig {
+  siteKey: string;
+  container: HTMLElement;
+  apiBaseURL?: string;
+  mode?: 'advertisement' | 'captcha' | 'invisible';
+  theme?: 'light' | 'dark';
+  language?: 'ru' | 'en';
+  hideOnSuccess?: boolean;
+  tokenTTL?: number;
+  onSuccess?: (token: string) => void;
+  onError?: (error: Error) => void;
+  onExpire?: () => void;
+  onLoad?: () => void;
+}
+
+// Экземпляр виджета
+interface AdQuestInstance {
+  reset(): void;
+  getToken(): string | null;
+  execute(): Promise<string>;
+  destroy(): void;
+}
+
+// Ответ от сервера
+interface VerifyTokenResponse {
+  valid: boolean;
+  timestamp: string;
+  score?: number;
+  action?: string;
+  hostname?: string;
+  error?: string;
+}
+
+// Глобальный объект
+declare global {
+  interface Window {
+    AdQuest: {
+      init(config: AdQuestConfig): AdQuestInstance;
+      reset(): void;
+      getToken(): string | null;
+      execute(): Promise<string>;
+      destroy(): void;
+    };
+  }
+}
+```
+
+## Коды ошибок
+
+| Код | Описание | Решение |
+|-----|----------|---------|
+| `INVALID_SITE_KEY` | Неверный Site Key | Проверьте Site Key в dashboard |
+| `TOKEN_EXPIRED` | Токен истек | Получите новый токен |
+| `TOKEN_ALREADY_USED` | Токен уже использован | Токены одноразовые |
+| `RATE_LIMIT_EXCEEDED` | Превышен лимит запросов | Подождите и повторите |
+| `NETWORK_ERROR` | Ошибка сети | Проверьте подключение |
+| `INVALID_DOMAIN` | Неверный домен | Добавьте домен в dashboard |
+
+## Rate Limits
+
+| Endpoint | Лимит | Период |
+|----------|-------|--------|
+| `/api/v1/verify-token` | 100 запросов | 1 минута |
+| Widget init | 10 запросов | 1 минута |
+
+## Следующие шаги
+
+- [Примеры интеграции](/adquest-widget/patterns/) - готовые решения
+- [Troubleshooting](/adquest-widget/gotchas/) - решение проблем
+- [Конфигурация](/adquest-widget/configuration/) - настройка виджета

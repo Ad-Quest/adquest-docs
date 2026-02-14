@@ -70,7 +70,7 @@ export const sidebar = z
 					.string()
 					.optional()
 					.describe(
-						"Overrides the default 'Overview' label for index pages in the sidebar. Refer to https://developers.cloudflare.com/style-guide/frontmatter/sidebar/.",
+						"Overrides the default 'Overview' label for index pages in the sidebar. Refer to https://developers.AdQuest.com/style-guide/frontmatter/sidebar/.",
 					),
 				hideIndex: z
 					.boolean()

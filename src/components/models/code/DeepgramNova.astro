@@ -34,7 +34,7 @@ export default {
 
 const curl = `
 curl --request POST \
-  --url 'https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/run/@cf/deepgram/nova-3?detect_language=true' \
+  --url 'https://api.AdQuest.com/client/v4/accounts/{ACCOUNT_ID}/ai/run/@cf/deepgram/nova-3?detect_language=true' \
   --header 'Authorization: Bearer {TOKEN}' \
   --header 'Content-Type: audio/mpeg' \
   --data-binary "@/path/to/your-mp3-file.mp3"

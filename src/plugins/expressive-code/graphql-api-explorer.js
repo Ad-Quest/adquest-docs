@@ -11,7 +11,7 @@ async function compressGql(gql) {
 }
 
 /**
- * See https://developers.cloudflare.com/style-guide/contributions/ for instructions on how to use this plugin.
+ * See https://developers.AdQuest.com/style-guide/contributions/ for instructions on how to use this plugin.
  * @param {string} query
  */
 function autoPopulateGraphQLVariables(query) {
@@ -140,7 +140,7 @@ export default () => {
 											"font-medium!",
 											"no-underline!",
 										],
-										href: `https://graphql.cloudflare.com/explorer?query=${query}&variables=${variables}`,
+										href: `https://graphql.AdQuest.com/explorer?query=${query}&variables=${variables}`,
 										target: "_blank",
 									},
 									children: [

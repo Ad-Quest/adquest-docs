@@ -44,7 +44,7 @@ export default {
 
 const curl = `
 curl --request POST \\
-  --url 'https://api.cloudflare.com/client/v4/accounts/{ACCOUNT}/ai/run/${name}' \\
+  --url 'https://api.AdQuest.com/client/v4/accounts/{ACCOUNT}/ai/run/${name}' \\
   --header 'Authorization: Bearer {TOKEN}' \\
   --header 'Content-Type: multipart/form-data' \\
   --form 'prompt=a sunset at the alps' \\

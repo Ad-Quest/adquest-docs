@@ -1,0 +1,245 @@
+---
+title: Конфигурация
+description: Настройка и конфигурация AdQuest Widget
+sidebar:
+  order: 2
+---
+
+import { Details, InlineBadge } from "~/components";
+
+# Конфигурация AdQuest Widget
+
+Полное руководство по настройке и конфигурации виджета.
+
+## Параметры инициализации
+
+### Обязательные параметры
+
+```typescript
+AdQuest.init({
+  siteKey: string,      // Ваш Site Key из dashboard
+  container: HTMLElement // DOM элемент для виджета
+});
+```
+
+### Все доступные параметры
+
+```typescript
+interface AdQuestConfig {
+  // Обязательные
+  siteKey: string;
+  container: HTMLElement;
+  
+  // Опциональные
+  apiBaseURL?: string;           // По умолчанию: 'https://api.ad-quest.ru'
+  mode?: 'advertisement' | 'captcha' | 'invisible'; // По умолчанию: 'advertisement'
+  theme?: 'light' | 'dark';      // По умолчанию: 'light'
+  language?: 'ru' | 'en';        // По умолчанию: 'ru'
+  hideOnSuccess?: boolean;       // По умолчанию: false
+  tokenTTL?: number;             // В секундах, по умолчанию: 3600
+  
+  // Callbacks
+  onSuccess?: (token: string) => void;
+  onError?: (error: Error) => void;
+  onExpire?: () => void;
+  onLoad?: () => void;
+}
+```
+
+## Примеры конфигурации
+
+### Минимальная конфигурация
+
+```javascript
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha')
+});
+```
+
+### Полная конфигурация
+
+```javascript
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  apiBaseURL: 'https://api.ad-quest.ru',
+  mode: 'advertisement',
+  theme: 'light',
+  language: 'ru',
+  hideOnSuccess: true,
+  tokenTTL: 3600,
+  
+  onSuccess: (token) => {
+    console.log('Токен получен:', token);
+    // Отправьте токен на сервер
+  },
+  
+  onError: (error) => {
+    console.error('Ошибка:', error);
+    // Обработайте ошибку
+  },
+  
+  onExpire: () => {
+    console.log('Токен истек');
+    // Обновите виджет
+  },
+  
+  onLoad: () => {
+    console.log('Виджет загружен');
+  }
+});
+```
+
+## Режимы работы
+
+### Advertisement Mode <InlineBadge preset="default" text="Рекомендуется" />
+
+Основной режим с показом рекламы:
+
+```javascript
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  mode: 'advertisement'
+});
+```
+
+### Captcha Mode
+
+Fallback режим с обычной CAPTCHA:
+
+```javascript
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  mode: 'captcha'
+});
+```
+
+### Invisible Mode <InlineBadge preset="beta" />
+
+Автоматическая проверка без UI:
+
+```javascript
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  mode: 'invisible'
+});
+```
+
+<Details header="Когда использовать Invisible Mode">
+
+Invisible Mode подходит для:
+- Страниц с низким риском
+- Авторизованных пользователей
+- API endpoints с дополнительной защитой
+
+Не рекомендуется для:
+- Форм регистрации
+- Платежных форм
+- Публичных API
+
+</Details>
+
+## Темы оформления
+
+### Light Theme
+
+```javascript
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  theme: 'light'
+});
+```
+
+### Dark Theme
+
+```javascript
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  theme: 'dark'
+});
+```
+
+### Автоматическое определение темы
+
+```javascript
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  theme: prefersDark ? 'dark' : 'light'
+});
+```
+
+## Локализация
+
+Поддерживаемые языки:
+- `ru` - Русский (по умолчанию)
+- `en` - English
+
+```javascript
+AdQuest.init({
+  siteKey: 'YOUR_SITE_KEY',
+  container: document.getElementById('adquest-captcha'),
+  language: 'en'
+});
+```
+
+## Защитные механизмы
+
+AdQuest включает встроенные механизмы защиты:
+
+- **Rate Limiting**: Ограничение количества запросов с одного IP
+- **Fingerprinting**: Идентификация браузера и устройства
+- **Behavioral Analysis**: Анализ поведения пользователя
+- **Token Validation**: Проверка токена на сервере
+
+## Тестовые ключи
+
+Для разработки используйте тестовые ключи из dashboard:
+
+```javascript
+// Тестовый Site Key (работает на localhost)
+const TEST_SITE_KEY = 'test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
+
+AdQuest.init({
+  siteKey: TEST_SITE_KEY,
+  container: document.getElementById('adquest-captcha')
+});
+```
+
+<Details header="Важно о тестовых ключах">
+
+- Работают только на `localhost` и тестовых доменах
+- Не используйте в production
+- Всегда показывают тестовую рекламу
+- Токены не проходят полную валидацию
+
+</Details>
+
+## Переменные окружения
+
+Рекомендуется хранить Site Key в переменных окружения:
+
+```javascript
+// .env
+ADQUEST_SITE_KEY=your_site_key_here
+
+// В коде
+AdQuest.init({
+  siteKey: process.env.ADQUEST_SITE_KEY,
+  container: document.getElementById('adquest-captcha')
+});
+```
+
+## Следующие шаги
+
+- [API Reference](/adquest-widget/api/) - изучите доступные методы
+- [Примеры интеграции](/adquest-widget/patterns/) - готовые решения
+- [Troubleshooting](/adquest-widget/gotchas/) - решение проблем

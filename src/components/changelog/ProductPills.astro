@@ -1,27 +1,31 @@
 ---
-import { getEntries } from "astro:content";
-import { reference } from "astro:content";
-import { z } from "astro:schema";
+interface Props {
+	products?: string[];
+}
 
-import { Badge } from "@astrojs/starlight/components";
-
-type Props = z.infer<typeof props>;
-
-const props = z.object({
-	products: z.array(reference("directory")),
-});
-
-const { products } = await props.parseAsync(Astro.props);
-
-const data = await getEntries(products);
+const { products = [] } = Astro.props;
 ---
 
-<div class="flex flex-row flex-wrap gap-2">
-	{
-		data.map((product) => (
-			<a href={product.data.entry.url} class="no-underline">
-				<Badge text={product.data.entry.title} variant="tip" />
-			</a>
-		))
+{products && products.length > 0 && (
+	<div class="product-pills">
+		{products.map((product) => (
+			<span class="pill">{product}</span>
+		))}
+	</div>
+)}
+
+<style>
+	.product-pills {
+		display: flex;
+		gap: 0.5rem;
+		flex-wrap: wrap;
+		margin: 0.5rem 0;
 	}
-</div>
+	
+	.pill {
+		padding: 0.25rem 0.5rem;
+		background: var(--sl-color-gray-6);
+		border-radius: 0.25rem;
+		font-size: 0.875rem;
+	}
+</style>

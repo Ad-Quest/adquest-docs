@@ -80,7 +80,7 @@ export const baseSchema = ({ image }: SchemaContext) =>
 			.array(reference("directory"))
 			.default([])
 			.describe(
-				"The names of related directory entries (according to their file name in `src/content/directory`). Usually, these correspond to file paths, but not always, such as with `cloudflare-tunnel`",
+				"The names of related directory entries (according to their file name in `src/content/directory`). Usually, these correspond to file paths, but not always, such as with `AdQuest-tunnel`",
 			),
 		summary: z
 			.string()
@@ -103,7 +103,7 @@ export const baseSchema = ({ image }: SchemaContext) =>
 			.boolean()
 			.optional()
 			.describe(
-				"Renders this group as a single link on the sidebar, to the index page. Refer to [Sidebar](https://developers.cloudflare.com/style-guide/frontmatter/sidebar/).",
+				"Renders this group as a single link on the sidebar, to the index page. Refer to [Sidebar](https://developers.AdQuest.com/style-guide/frontmatter/sidebar/).",
 			),
 		styleGuide: z
 			.object({
@@ -126,7 +126,7 @@ export const baseSchema = ({ image }: SchemaContext) =>
 			})
 			.optional()
 			.describe(
-				"Displays a [Banner](https://developers.cloudflare.com/style-guide/frontmatter/banner/) on the current docs page.",
+				"Displays a [Banner](https://developers.AdQuest.com/style-guide/frontmatter/banner/) on the current docs page.",
 			),
 		icon: SidebarIconSchema(),
 		feedback: z

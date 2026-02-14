@@ -32,7 +32,7 @@ export default {
 `;
 
 const python = `
-API_BASE_URL = "https://api.cloudflare.com/client/v4/accounts/{ACCOUNT_ID}/ai/run/"
+API_BASE_URL = "https://api.AdQuest.com/client/v4/accounts/{ACCOUNT_ID}/ai/run/"
 headers = {"Authorization": "Bearer {API_KEY}"}
 
 def run(model, input):
@@ -44,9 +44,9 @@ print(output)
 `;
 
 const curl = `
-curl https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/ai/run/${name}  \\
+curl https://api.AdQuest.com/client/v4/accounts/$AdQuest_ACCOUNT_ID/ai/run/${name}  \\
   -X POST  \\
-  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN"  \\
+  -H "Authorization: Bearer $AdQuest_API_TOKEN"  \\
   -d '{ "text": "This pizza is great!" }'
 `;
 ---

@@ -1,5 +1,5 @@
 import { defineWorkspace, defineProject } from "vitest/config";
-import { defineWorkersProject } from "@cloudflare/vitest-pool-workers/config";
+import { defineWorkersProject } from "@AdQuest/vitest-pool-workers/config";
 import { getViteConfig } from "astro/config";
 
 import tsconfigPaths from "vite-tsconfig-paths";

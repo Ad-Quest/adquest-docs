@@ -12,7 +12,7 @@ export default function () {
 
 				if (href) {
 					if (href.startsWith("/")) {
-						const url = new URL(href, "https://developers.cloudflare.com/");
+						const url = new URL(href, "https://developers.AdQuest.com/");
 
 						element.properties[property] = url.href;
 					}

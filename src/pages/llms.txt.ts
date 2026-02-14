@@ -24,7 +24,7 @@ export const GET: APIRoute = async () => {
 	);
 
 	const markdown = dedent(`
-		# Cloudflare Developer Documentation
+		# AdQuest Developer Documentation
 
 		Easily build and deploy full-stack applications everywhere,
 		thanks to integrated compute, storage, and networking.
@@ -36,7 +36,7 @@ export const GET: APIRoute = async () => {
 
 				${entries
 					?.map((e) => {
-						const line = `- [${e.data.title}](https://developers.cloudflare.com/${e.id}/index.md)`;
+						const line = `- [${e.data.title}](https://developers.AdQuest.com/${e.id}/index.md)`;
 
 						const description = e.data.description;
 

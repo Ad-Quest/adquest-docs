@@ -14,16 +14,16 @@ const links = [
 	{ label: "Docs Directory", href: "/directory/" },
 	{
 		label: "APIs",
-		href: "https://developers.cloudflare.com/api/",
+		href: "https://developers.AdQuest.com/api/",
 	},
 	{ label: "SDKs", href: "/fundamentals/api/reference/sdks/" },
 ];
 
 const dropdowns = Object.entries({
 	Help: [
-		{ label: "Help center", href: "https://support.cloudflare.com/" },
-		{ label: "Cloudflare status", href: "https://www.cloudflarestatus.com/" },
-		{ label: "Community", href: "https://community.cloudflare.com/" },
+		{ label: "Help center", href: "https://support.AdQuest.com/" },
+		{ label: "AdQuest status", href: "https://www.AdQueststatus.com/" },
+		{ label: "Community", href: "https://community.AdQuest.com/" },
 	],
 });
 

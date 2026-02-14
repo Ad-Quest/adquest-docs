@@ -16,7 +16,14 @@ type Group = Extract<StarlightRouteData["sidebar"][0], { type: "group" }> & {
 export type SidebarEntry = Link | Group;
 type Badge = Link["badge"];
 
-const directory = await getCollection("directory");
+let directory: Awaited<ReturnType<typeof getCollection<"directory">>> = [];
+
+try {
+	directory = await getCollection("directory");
+} catch (error) {
+	console.warn("Directory collection not found or empty");
+}
+
 const sidebars = new Map<string, Group>();
 
 export async function getSidebar(context: AstroGlobal) {
@@ -182,7 +189,7 @@ export function flattenSidebar(sidebar: SidebarEntry[]): Link[] {
 
 function getBadge(link: string): any {
 	if (link.startsWith("/api")) return { text: "API", variant: "note" };
-	if (link.includes("/mcp-server-cloudflare"))
+	if (link.includes("/mcp-server-AdQuest"))
 		return { text: "MCP", variant: "note" };
 	return undefined;
 }

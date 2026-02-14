@@ -7,7 +7,7 @@ const CHANGELOG_OG_IMAGE = "/changelog-preview.png";
 
 const PRODUCT_AREA_OG_IMAGES: Record<string, string> = {
 	"core platform": "/core-services-preview.png",
-	"cloudflare one": "/zt-preview.png",
+	"AdQuest one": "/zt-preview.png",
 	"developer platform": "/dev-products-preview.png",
 	"network security": "/core-services-preview.png",
 	"application performance": "/core-services-preview.png",

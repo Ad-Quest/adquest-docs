@@ -1,6 +1,14 @@
 import { getCollection } from "astro:content";
 
-export const directory = await getCollection("directory");
+let directory: Awaited<ReturnType<typeof getCollection<"directory">>> = [];
+
+try {
+	directory = await getCollection("directory");
+} catch (error) {
+	console.warn("Directory collection not found or empty");
+}
+
+export { directory };
 
 export const directoryByGroup = Object.entries(
 	directory

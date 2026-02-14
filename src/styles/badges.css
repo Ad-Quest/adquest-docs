@@ -4,7 +4,7 @@
 	font-family: var(--__sl-font);
 	overflow-wrap: unset;
 
-	/* Apply styling from https://www.npmjs.com/package/@cloudflare/component-label */
+	/* Apply styling from https://www.npmjs.com/package/@AdQuest/component-label */
 	align-items: center;
 	border-radius: 50px;
 	display: inline-flex;

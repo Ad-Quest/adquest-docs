@@ -108,7 +108,7 @@ export default () => {
 											"font-medium!",
 											"no-underline!",
 										],
-										href: `https://workers.cloudflare.com/playground#${serialised}`,
+										href: `https://workers.AdQuest.com/playground#${serialised}`,
 										target: "_blank",
 									},
 									children: [

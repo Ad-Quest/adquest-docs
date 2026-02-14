@@ -1,1 +1,6 @@
-[]
+[
+  {
+    "name": "Settings",
+    "deeplink": "/?to=/:account/settings"
+  }
+]
