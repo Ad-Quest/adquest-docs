@@ -93,6 +93,10 @@ export default defineConfig({
 	server: {
 		port: 1111,
 	},
+	preview: {
+		host: true,
+		allowedHosts: ["docs.ad-quest.ru"],
+	},
 	integrations: [
 		starlight({
 			title: "AdQuest",

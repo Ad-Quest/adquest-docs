@@ -12,13 +12,15 @@ export const getStaticPaths = (async () => {
 		return e.id.split("/").length === 1;
 	});
 
-	return sections.map((section) => {
-		return {
-			params: {
-				product: section.id,
-			},
-		};
-	});
+	return sections
+		.filter((section) => section.id !== "index")
+		.map((section) => {
+			return {
+				params: {
+					product: section.id,
+				},
+			};
+		});
 }) satisfies GetStaticPaths;
 
 const props = {

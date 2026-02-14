@@ -40,3 +40,7 @@ CLAUDE.md
 .cursor/
 .github/prompts/
 .github/agents/
+
+# Docker and SSL
+certbot/
+nginx/nginx.conf

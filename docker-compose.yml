@@ -1,0 +1,27 @@
+services:
+  adquest-docs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:8765:4321"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    container_name: adquest-docs
+
+  # Опциональный сервис для разработки с hot-reload
+  adquest-docs-dev:
+    image: node:22-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "8766:4321"
+    command: sh -c "npm ci && npm run dev -- --host 0.0.0.0"
+    environment:
+      - NODE_ENV=development
+    container_name: adquest-docs-dev
+    profiles:
+      - dev
