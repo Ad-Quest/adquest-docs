@@ -65,7 +65,7 @@ const RUN_LINK_CHECK =
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://developers.AdQuest.com",
+	site: "https://ad-quest.ru",
 	markdown: {
 		smartypants: false,
 		remarkPlugins: [remarkValidateImages],

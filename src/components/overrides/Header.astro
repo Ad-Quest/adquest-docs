@@ -3,8 +3,6 @@ import LanguageSelect from "@astrojs/starlight/components/LanguageSelect.astro";
 import DocSearch from "@astrojs/starlight-docsearch/DocSearch.astro";
 import SiteTitle from "@astrojs/starlight/components/SiteTitle.astro";
 import ThemeSelect from "@astrojs/starlight/components/ThemeSelect.astro";
-
-import HeaderDropdowns from "../HeaderDropdowns.tsx";
 ---
 
 <div class="flex h-full items-center justify-between gap-4">
@@ -14,13 +12,12 @@ import HeaderDropdowns from "../HeaderDropdowns.tsx";
 			<DocSearch />
 		</div>
 		<div id="right-group" class="hidden h-10 flex-wrap gap-x-2 overflow-hidden">
-			<HeaderDropdowns client:idle />
 			<a
 				id="header-login-button"
-				href="https://crm.AdQuest.ru/"
-				class="mr-2 flex items-center justify-center rounded-sm bg-cl1-brand-orange px-6 font-medium text-cl1-black no-underline"
+				href="https://ad-quest.ru/"
+				class="btn-brand mr-2 inline-flex items-center justify-center rounded-lg px-6 font-semibold no-underline"
 			>
-				Log in
+				Вход
 			</a>
 			<ThemeSelect />
 			<LanguageSelect />

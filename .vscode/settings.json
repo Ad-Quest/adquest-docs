@@ -10,5 +10,7 @@
 	},
 	"[astro]": {
 		"editor.defaultFormatter": "astro-build.astro-vscode"
-	}
+	},
+	"css.validate": false,
+	"css.customData": [".vscode/css_custom_data.json"]
 }

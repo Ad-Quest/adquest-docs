@@ -14,7 +14,7 @@ const links = [
 	{ label: "Docs Directory", href: "/directory/" },
 	{
 		label: "APIs",
-		href: "https://developers.AdQuest.com/api/",
+		href: "https://ad-quest.ru/api/",
 	},
 	{ label: "SDKs", href: "/fundamentals/api/reference/sdks/" },
 ];
