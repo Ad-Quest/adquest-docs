@@ -1,0 +1,121 @@
+---
+---
+
+<!DOCTYPE html>
+<html lang="ru" dir="ltr" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Проверка безопасности - AdQuest</title>
+  <link rel="icon" href="/favicon.png" />
+  <script defer src="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js?v=20"></script>
+  <link rel="stylesheet" href="https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.css?v=20" />
+  <style is:global>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+
+
+    .logo_caotcha {
+            align-items: center;
+                  justify-content: center;
+      width: 120px;
+      height: auto;
+      margin-bottom: 2rem;
+    }
+
+
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #f0f6fc;
+    }
+
+    p {
+      color: #8b949e;
+      margin-bottom: 2rem;
+    }
+
+  </style>
+</head>
+<body>
+  <div>
+    <img src="/logo_white.svg" alt="AdQuest" class="logo_caotcha" />
+    <div >
+      <h1>Проверка безопасности</h1>
+      <p>Пожалуйста, пройдите проверку для доступа к документации</p>
+      <div id="adquest-captcha"></div>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function() {
+      // Error handler
+      window.addEventListener('error', function(e) {
+        console.warn('Script error caught:', e.message, e.filename);
+      });
+
+      function initCaptcha() {
+        const container = document.getElementById('adquest-captcha');
+        if (!container) {
+          console.error('Captcha container not found');
+          return;
+        }
+
+        if (!window.AdQuest) {
+          console.error('AdQuest widget not loaded');
+          setTimeout(initCaptcha, 100);
+          return;
+        }
+
+        try {
+          const widget = window.AdQuest.init({
+            siteKey: 'pk_25c12f55047e6a52a325efa13616579a',
+            container: container,
+            apiBaseURL: 'https://api.ad-quest.ru',
+            onSuccess: function(token) {
+              console.log('Verification successful:', token);
+              // Save verification status with timestamp
+              localStorage.setItem('adquest_captcha_passed', 'true');
+              localStorage.setItem('adquest_captcha_time', Date.now().toString());
+              
+              // Small delay to ensure localStorage is saved
+              setTimeout(function() {
+                // Redirect to original page using replace to avoid history entry
+                const redirectUrl = new URLSearchParams(window.location.search).get('redirect') || '/';
+                window.location.replace(decodeURIComponent(redirectUrl));
+              }, 100);
+            },
+            onError: function(error) {
+              console.error('Captcha error:', error);
+              alert('Ошибка проверки. Пожалуйста, попробуйте еще раз.');
+            }
+          });
+        } catch (error) {
+          console.error('Init error:', error);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCaptcha);
+      } else {
+        initCaptcha();
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -3,9 +3,9 @@ import { htmlToMarkdown } from "~/util/markdown";
 
 // `astro dev` only middleware so that `/api/...` links can be viewed.
 export const onRequest = defineMiddleware(async (context, next) => {
-	if (import.meta.env.DEV) {
-		const { pathname } = context.url;
+	const { pathname } = context.url;
 
+	if (import.meta.env.DEV) {
 		if (pathname.startsWith("/api/")) {
 			const url = new URL(pathname, import.meta.env.SITE);
 

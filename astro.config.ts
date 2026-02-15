@@ -1,4 +1,5 @@
 import { defineConfig } from "astro/config";
+import node from "@astrojs/node";
 import starlight from "@astrojs/starlight";
 import starlightDocSearch from "@astrojs/starlight-docsearch";
 import starlightImageZoom from "starlight-image-zoom";
@@ -93,6 +94,7 @@ const RUN_LINK_CHECK =
 // https://astro.build/config
 export default defineConfig({
 	site: "https://ad-quest.ru",
+	output: "static",
 	markdown: {
 		smartypants: false,
 		remarkPlugins: [remarkValidateImages],
