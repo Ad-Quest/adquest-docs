@@ -1,6 +1,6 @@
 # Mermaid Diagram Rendering
 
-Client-side rendering of Mermaid diagrams with AdQuest branding (orange `#f6821f`), light/dark theme support, and annotation footers.
+Client-side rendering of Mermaid diagrams with ADQuest branding (orange `#f6821f`), light/dark theme support, and annotation footers.
 
 ## Usage
 

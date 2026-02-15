@@ -1,4 +1,4 @@
-# Docker Setup для AdQuest Docs
+# Docker Setup для ADQuest Docs
 
 ## Быстрый старт
 

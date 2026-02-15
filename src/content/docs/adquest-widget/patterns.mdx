@@ -1,6 +1,6 @@
 ---
 title: Примеры интеграции
-description: Готовые примеры интеграции AdQuest Widget с популярными фреймворками
+description: Готовые примеры интеграции ADQuest Widget с популярными фреймворками
 sidebar:
   label: Примеры
   order: 3
@@ -10,7 +10,7 @@ import { Tabs, TabItem, Details, TypeScriptExample } from "~/components";
 
 # Примеры интеграции
 
-Готовые решения для интеграции AdQuest Widget с популярными фреймворками и библиотеками.
+Готовые решения для интеграции ADQuest Widget с популярными фреймворками и библиотеками.
 
 ## Интеграция с формами
 
@@ -30,7 +30,7 @@ import { Tabs, TabItem, Details, TypeScriptExample } from "~/components";
 <script>
 let verificationToken = null;
 
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   hideOnSuccess: true,
@@ -65,7 +65,7 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     window.location.href = '/dashboard';
   } else {
     alert('Ошибка входа');
-    AdQuest.reset();
+    ADQuest.reset();
   }
 });
 </script>
@@ -73,18 +73,18 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
 ## React
 
-<TypeScriptExample filename="src/components/AdQuestWidget.tsx">
+<TypeScriptExample filename="src/components/ADQuestWidget.tsx">
 
 ```typescript
 import { useEffect, useRef, useState } from 'react';
 
-interface AdQuestWidgetProps {
+interface ADQuestWidgetProps {
   siteKey: string;
   onSuccess: (token: string) => void;
   onError?: (error: Error) => void;
 }
 
-export function AdQuestWidget({ siteKey, onSuccess, onError }: AdQuestWidgetProps) {
+export function ADQuestWidget({ siteKey, onSuccess, onError }: ADQuestWidgetProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -105,15 +105,15 @@ export function AdQuestWidget({ siteKey, onSuccess, onError }: AdQuestWidgetProp
     return () => {
       document.body.removeChild(script);
       document.head.removeChild(link);
-      if (window.AdQuest) {
-        window.AdQuest.destroy();
+      if (window.ADQuest) {
+        window.ADQuest.destroy();
       }
     };
   }, []);
 
   useEffect(() => {
-    if (isLoaded && containerRef.current && window.AdQuest) {
-      window.AdQuest.init({
+    if (isLoaded && containerRef.current && window.ADQuest) {
+      window.ADQuest.init({
         siteKey,
         container: containerRef.current,
         onSuccess,
@@ -150,7 +150,7 @@ function LoginForm() {
       <input type="email" required />
       <input type="password" required />
       
-      <AdQuestWidget
+      <ADQuestWidget
         siteKey="YOUR_SITE_KEY"
         onSuccess={setToken}
         onError={(error) => console.error(error)}
@@ -210,8 +210,8 @@ onMounted(() => {
   script.src = 'https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js';
   script.async = true;
   script.onload = () => {
-    if (containerRef.value && window.AdQuest) {
-      window.AdQuest.init({
+    if (containerRef.value && window.ADQuest) {
+      window.ADQuest.init({
         siteKey: props.siteKey,
         container: containerRef.value,
         onSuccess: (t: string) => {
@@ -228,8 +228,8 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  if (window.AdQuest) {
-    window.AdQuest.destroy();
+  if (window.ADQuest) {
+    window.ADQuest.destroy();
   }
 });
 
@@ -290,8 +290,8 @@ export default {
     script.src = 'https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js';
     script.async = true;
     script.onload = () => {
-      if (this.$refs.container && window.AdQuest) {
-        window.AdQuest.init({
+      if (this.$refs.container && window.ADQuest) {
+        window.ADQuest.init({
           siteKey: this.siteKey,
           container: this.$refs.container,
           onSuccess: (token) => {
@@ -308,8 +308,8 @@ export default {
   },
   
   beforeUnmount() {
-    if (window.AdQuest) {
-      window.AdQuest.destroy();
+    if (window.ADQuest) {
+      window.ADQuest.destroy();
     }
   },
   
@@ -337,19 +337,19 @@ export default {
 
 ## Next.js
 
-<TypeScriptExample filename="components/AdQuestWidget.tsx">
+<TypeScriptExample filename="components/ADQuestWidget.tsx">
 
 ```typescript
 'use client';
 
 import { useEffect, useRef } from 'react';
 
-interface AdQuestWidgetProps {
+interface ADQuestWidgetProps {
   siteKey: string;
   onSuccess: (token: string) => void;
 }
 
-export function AdQuestWidget({ siteKey, onSuccess }: AdQuestWidgetProps) {
+export function ADQuestWidget({ siteKey, onSuccess }: ADQuestWidgetProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -362,8 +362,8 @@ export function AdQuestWidget({ siteKey, onSuccess }: AdQuestWidgetProps) {
       script.async = true;
       
       script.onload = () => {
-        if (containerRef.current && window.AdQuest) {
-          window.AdQuest.init({
+        if (containerRef.current && window.ADQuest) {
+          window.ADQuest.init({
             siteKey,
             container: containerRef.current,
             onSuccess
@@ -377,8 +377,8 @@ export function AdQuestWidget({ siteKey, onSuccess }: AdQuestWidgetProps) {
     loadWidget();
 
     return () => {
-      if (window.AdQuest) {
-        window.AdQuest.destroy();
+      if (window.ADQuest) {
+        window.ADQuest.destroy();
       }
     };
   }, [siteKey, onSuccess]);

@@ -1,6 +1,6 @@
 ---
 title: Конфигурация
-description: Настройка и конфигурация AdQuest Widget
+description: Настройка и конфигурация ADQuest Widget
 sidebar:
   label: Настройка
   order: 1
@@ -8,7 +8,7 @@ sidebar:
 
 import { Details, InlineBadge } from "~/components";
 
-# Конфигурация AdQuest Widget
+# Конфигурация ADQuest Widget
 
 Полное руководство по настройке и конфигурации виджета.
 
@@ -17,7 +17,7 @@ import { Details, InlineBadge } from "~/components";
 ### Обязательные параметры
 
 ```typescript
-AdQuest.init({
+ADQuest.init({
   siteKey: string,      // Ваш Site Key из dashboard
   container: HTMLElement // DOM элемент для виджета
 });
@@ -26,7 +26,7 @@ AdQuest.init({
 ### Все доступные параметры
 
 ```typescript
-interface AdQuestConfig {
+interface ADQuestConfig {
   // Обязательные
   siteKey: string;
   container: HTMLElement;
@@ -52,7 +52,7 @@ interface AdQuestConfig {
 ### Минимальная конфигурация
 
 ```javascript
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha')
 });
@@ -61,7 +61,7 @@ AdQuest.init({
 ### Полная конфигурация
 
 ```javascript
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   apiBaseURL: 'https://api.ad-quest.ru',
@@ -99,7 +99,7 @@ AdQuest.init({
 Основной режим с показом рекламы:
 
 ```javascript
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   mode: 'advertisement'
@@ -111,7 +111,7 @@ AdQuest.init({
 Fallback режим с обычной CAPTCHA:
 
 ```javascript
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   mode: 'captcha'
@@ -123,7 +123,7 @@ AdQuest.init({
 Автоматическая проверка без UI:
 
 ```javascript
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   mode: 'invisible'
@@ -149,7 +149,7 @@ Invisible Mode подходит для:
 ### Light Theme
 
 ```javascript
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   theme: 'light'
@@ -159,7 +159,7 @@ AdQuest.init({
 ### Dark Theme
 
 ```javascript
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   theme: 'dark'
@@ -171,7 +171,7 @@ AdQuest.init({
 ```javascript
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   theme: prefersDark ? 'dark' : 'light'
@@ -185,7 +185,7 @@ AdQuest.init({
 - `en` - English
 
 ```javascript
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   language: 'en'
@@ -194,7 +194,7 @@ AdQuest.init({
 
 ## Защитные механизмы
 
-AdQuest включает встроенные механизмы защиты:
+ADQuest включает встроенные механизмы защиты:
 
 - **Rate Limiting**: Ограничение количества запросов с одного IP
 - **Fingerprinting**: Идентификация браузера и устройства
@@ -209,7 +209,7 @@ AdQuest включает встроенные механизмы защиты:
 // Тестовый Site Key (работает на localhost)
 const TEST_SITE_KEY = 'test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 
-AdQuest.init({
+ADQuest.init({
   siteKey: TEST_SITE_KEY,
   container: document.getElementById('adquest-captcha')
 });
@@ -233,7 +233,7 @@ AdQuest.init({
 ADQUEST_SITE_KEY=your_site_key_here
 
 // В коде
-AdQuest.init({
+ADQuest.init({
   siteKey: process.env.ADQUEST_SITE_KEY,
   container: document.getElementById('adquest-captcha')
 });

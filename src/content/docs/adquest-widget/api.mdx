@@ -1,6 +1,6 @@
 ---
 title: API Reference
-description: JavaScript API и серверные endpoints AdQuest Widget
+description: JavaScript API и серверные endpoints ADQuest Widget
 sidebar:
   label: API
   order: 2
@@ -14,18 +14,18 @@ import { Details, InlineBadge } from "~/components";
 
 ## JavaScript API
 
-### AdQuest.init()
+### ADQuest.init()
 
 Инициализация виджета.
 
 ```typescript
-AdQuest.init(config: AdQuestConfig): AdQuestInstance
+ADQuest.init(config: ADQuestConfig): ADQuestInstance
 ```
 
 **Параметры:**
 
 ```typescript
-interface AdQuestConfig {
+interface ADQuestConfig {
   siteKey: string;
   container: HTMLElement;
   apiBaseURL?: string;
@@ -41,12 +41,12 @@ interface AdQuestConfig {
 }
 ```
 
-**Возвращает:** `AdQuestInstance`
+**Возвращает:** `ADQuestInstance`
 
 **Пример:**
 
 ```javascript
-const widget = AdQuest.init({
+const widget = ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   onSuccess: (token) => {
@@ -55,27 +55,27 @@ const widget = AdQuest.init({
 });
 ```
 
-### AdQuest.reset()
+### ADQuest.reset()
 
 Сброс виджета к начальному состоянию.
 
 ```typescript
-AdQuest.reset(): void
+ADQuest.reset(): void
 ```
 
 **Пример:**
 
 ```javascript
 // Сбросить виджет после ошибки
-AdQuest.reset();
+ADQuest.reset();
 ```
 
-### AdQuest.getToken()
+### ADQuest.getToken()
 
 Получение текущего токена.
 
 ```typescript
-AdQuest.getToken(): string | null
+ADQuest.getToken(): string | null
 ```
 
 **Возвращает:** Токен или `null` если токен не получен.
@@ -83,18 +83,18 @@ AdQuest.getToken(): string | null
 **Пример:**
 
 ```javascript
-const token = AdQuest.getToken();
+const token = ADQuest.getToken();
 if (token) {
   console.log('Current token:', token);
 }
 ```
 
-### AdQuest.execute() <InlineBadge preset="beta" />
+### ADQuest.execute() <InlineBadge preset="beta" />
 
 Программный запуск проверки (только для invisible mode).
 
 ```typescript
-AdQuest.execute(): Promise<string>
+ADQuest.execute(): Promise<string>
 ```
 
 **Возвращает:** Promise с токеном.
@@ -103,26 +103,26 @@ AdQuest.execute(): Promise<string>
 
 ```javascript
 try {
-  const token = await AdQuest.execute();
+  const token = await ADQuest.execute();
   console.log('Token:', token);
 } catch (error) {
   console.error('Verification failed:', error);
 }
 ```
 
-### AdQuest.destroy()
+### ADQuest.destroy()
 
 Удаление виджета и очистка ресурсов.
 
 ```typescript
-AdQuest.destroy(): void
+ADQuest.destroy(): void
 ```
 
 **Пример:**
 
 ```javascript
 // Очистка при размонтировании компонента
-AdQuest.destroy();
+ADQuest.destroy();
 ```
 
 ## Server API
@@ -265,7 +265,7 @@ if (!$result['valid']) {
 
 ```typescript
 // Конфигурация виджета
-interface AdQuestConfig {
+interface ADQuestConfig {
   siteKey: string;
   container: HTMLElement;
   apiBaseURL?: string;
@@ -281,7 +281,7 @@ interface AdQuestConfig {
 }
 
 // Экземпляр виджета
-interface AdQuestInstance {
+interface ADQuestInstance {
   reset(): void;
   getToken(): string | null;
   execute(): Promise<string>;
@@ -301,8 +301,8 @@ interface VerifyTokenResponse {
 // Глобальный объект
 declare global {
   interface Window {
-    AdQuest: {
-      init(config: AdQuestConfig): AdQuestInstance;
+    ADQuest: {
+      init(config: ADQuestConfig): ADQuestInstance;
       reset(): void;
       getToken(): string | null;
       execute(): Promise<string>;

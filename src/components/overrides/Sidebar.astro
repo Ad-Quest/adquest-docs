@@ -11,7 +11,7 @@ function getProductTitle(product: string): string {
 }
 
 const [product] = Astro.url.pathname.split("/").filter(Boolean);
-const productTitle = product ? getProductTitle(product) : "AdQuest";
+const productTitle = product ? getProductTitle(product) : "ADQuest";
 ---
 
 {product && (

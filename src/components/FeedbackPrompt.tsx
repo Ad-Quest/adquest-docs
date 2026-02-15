@@ -84,7 +84,7 @@ function Form({
 			body: formData,
 		});
 
-		setTitle("Thank you for helping improve AdQuest's documentation!");
+		setTitle("Thank you for helping improve ADQuest's documentation!");
 		setSubmitted(true);
 	}
 

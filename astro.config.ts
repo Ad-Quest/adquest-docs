@@ -128,7 +128,7 @@ export default defineConfig({
 	},
 	integrations: [
 		starlight({
-			title: "AdQuest",
+			title: "ADQuest",
 			logo: {
 				light: "~/assets/logo_dark.svg",
 				dark: "~/assets/logo_white.svg",

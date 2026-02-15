@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting
-description: Частые ошибки, отладка и решение проблем с AdQuest Widget
+description: Частые ошибки, отладка и решение проблем с ADQuest Widget
 sidebar:
   label: Решение проблем
   order: 4
@@ -10,7 +10,7 @@ import { Details, InlineBadge } from "~/components";
 
 # Troubleshooting
 
-Решение частых проблем и ошибок при работе с AdQuest Widget.
+Решение частых проблем и ошибок при работе с ADQuest Widget.
 
 ## Частые ошибки
 
@@ -22,7 +22,7 @@ import { Details, InlineBadge } from "~/components";
 
 ```javascript
 // Проверка в консоли браузера
-console.log(typeof window.AdQuest); // Должно быть 'object'
+console.log(typeof window.ADQuest); // Должно быть 'object'
 ```
 
 Если `undefined`, проверьте:
@@ -36,12 +36,12 @@ console.log(typeof window.AdQuest); // Должно быть 'object'
 
 ```javascript
 // Неправильно - Site Key не указан
-AdQuest.init({
+ADQuest.init({
   container: document.getElementById('adquest-captcha')
 });
 
 // Правильно
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha')
 });
@@ -77,7 +77,7 @@ const SITE_KEY = process.env.NODE_ENV === 'production'
   ? 'prod_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
   : 'test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
 
-AdQuest.init({
+ADQuest.init({
   siteKey: SITE_KEY,
   container: document.getElementById('adquest-captcha')
 });
@@ -91,7 +91,7 @@ AdQuest.init({
 
 ```javascript
 // Увеличьте время жизни токена
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   tokenTTL: 7200 // 2 часа
@@ -106,12 +106,12 @@ AdQuest.init({
 
 ```javascript
 // Неправильно - повторное использование токена
-const token = AdQuest.getToken();
+const token = ADQuest.getToken();
 await verifyToken(token); // Первая проверка - OK
 await verifyToken(token); // Вторая проверка - FAIL
 
 // Правильно - получите новый токен
-AdQuest.reset();
+ADQuest.reset();
 // Пользователь проходит проверку заново
 ```
 
@@ -131,7 +131,7 @@ AdQuest.reset();
 
 ```javascript
 // Убедитесь, что используете правильный URL
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   apiBaseURL: 'https://api.ad-quest.ru' // Правильный URL
@@ -155,24 +155,24 @@ location.reload();
 Вы увидите подробные логи в консоли:
 
 ```
-[AdQuest] Initializing widget...
-[AdQuest] Site Key: YOUR_SITE_KEY
-[AdQuest] Mode: advertisement
-[AdQuest] Loading advertisement...
-[AdQuest] Token received: eyJ...
+[ADQuest] Initializing widget...
+[ADQuest] Site Key: YOUR_SITE_KEY
+[ADQuest] Mode: advertisement
+[ADQuest] Loading advertisement...
+[ADQuest] Token received: eyJ...
 ```
 
 ### Проверка состояния виджета
 
 ```javascript
 // В консоли браузера
-console.log(AdQuest.getToken()); // Текущий токен или null
+console.log(ADQuest.getToken()); // Текущий токен или null
 ```
 
 ### Мониторинг событий
 
 ```javascript
-AdQuest.init({
+ADQuest.init({
   siteKey: 'YOUR_SITE_KEY',
   container: document.getElementById('adquest-captcha'),
   
@@ -203,7 +203,7 @@ AdQuest.init({
 ```javascript
 // Загрузка при клике на форму
 document.getElementById('loginForm').addEventListener('focus', () => {
-  if (!window.AdQuest) {
+  if (!window.ADQuest) {
     const script = document.createElement('script');
     script.src = 'https://cdn.ad-quest.ru/widget/v1/adquest-widget.min.js';
     script.async = true;
