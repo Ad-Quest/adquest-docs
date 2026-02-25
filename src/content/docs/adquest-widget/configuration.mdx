@@ -18,7 +18,7 @@ import { Details, InlineBadge } from "~/components";
 
 ```typescript
 ADQuest.init({
-  siteKey: string,      // Ваш Site Key из dashboard
+  siteKey: string,      // Ваш Public Key (pk_...) из dashboard
   container: HTMLElement // DOM элемент для виджета
 });
 ```
@@ -53,7 +53,7 @@ interface ADQuestConfig {
 
 ```javascript
 ADQuest.init({
-  siteKey: 'YOUR_SITE_KEY',
+  siteKey: 'pk_demo_1234567890abcdef1234567890abcdef', // Демо Public Key
   container: document.getElementById('adquest-captcha')
 });
 ```
@@ -62,7 +62,7 @@ ADQuest.init({
 
 ```javascript
 ADQuest.init({
-  siteKey: 'YOUR_SITE_KEY',
+  siteKey: 'pk_demo_1234567890abcdef1234567890abcdef', // Демо Public Key
   container: document.getElementById('adquest-captcha'),
   apiBaseURL: 'https://api.ad-quest.ru',
   mode: 'advertisement',
@@ -100,7 +100,7 @@ ADQuest.init({
 
 ```javascript
 ADQuest.init({
-  siteKey: 'YOUR_SITE_KEY',
+  siteKey: 'pk_demo_1234567890abcdef1234567890abcdef',
   container: document.getElementById('adquest-captcha'),
   mode: 'advertisement'
 });
@@ -112,7 +112,7 @@ Fallback режим с обычной CAPTCHA:
 
 ```javascript
 ADQuest.init({
-  siteKey: 'YOUR_SITE_KEY',
+  siteKey: 'pk_demo_1234567890abcdef1234567890abcdef',
   container: document.getElementById('adquest-captcha'),
   mode: 'captcha'
 });
@@ -124,7 +124,7 @@ ADQuest.init({
 
 ```javascript
 ADQuest.init({
-  siteKey: 'YOUR_SITE_KEY',
+  siteKey: 'pk_demo_1234567890abcdef1234567890abcdef',
   container: document.getElementById('adquest-captcha'),
   mode: 'invisible'
 });
@@ -150,7 +150,7 @@ Invisible Mode подходит для:
 
 ```javascript
 ADQuest.init({
-  siteKey: 'YOUR_SITE_KEY',
+  siteKey: 'pk_demo_1234567890abcdef1234567890abcdef',
   container: document.getElementById('adquest-captcha'),
   theme: 'light'
 });
@@ -160,7 +160,7 @@ ADQuest.init({
 
 ```javascript
 ADQuest.init({
-  siteKey: 'YOUR_SITE_KEY',
+  siteKey: 'pk_demo_1234567890abcdef1234567890abcdef',
   container: document.getElementById('adquest-captcha'),
   theme: 'dark'
 });
@@ -172,7 +172,7 @@ ADQuest.init({
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
 ADQuest.init({
-  siteKey: 'YOUR_SITE_KEY',
+  siteKey: 'pk_demo_1234567890abcdef1234567890abcdef',
   container: document.getElementById('adquest-captcha'),
   theme: prefersDark ? 'dark' : 'light'
 });
@@ -186,7 +186,7 @@ ADQuest.init({
 
 ```javascript
 ADQuest.init({
-  siteKey: 'YOUR_SITE_KEY',
+  siteKey: 'pk_demo_1234567890abcdef1234567890abcdef',
   container: document.getElementById('adquest-captcha'),
   language: 'en'
 });
@@ -203,40 +203,69 @@ ADQuest включает встроенные механизмы защиты:
 
 ## Тестовые ключи
 
-Для разработки используйте тестовые ключи из dashboard:
+Для разработки и тестирования используйте демо-ключи:
+
+**Демо Public Key (для виджета):**
+```
+pk_demo_1234567890abcdef1234567890abcdef
+```
+
+**Демо Secret Key (для бэкенда):**
+```
+sk_secret_demo_1234567890abcdef1234567890ab
+```
 
 ```javascript
-// Тестовый Site Key (работает на localhost)
-const TEST_SITE_KEY = 'test_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx';
-
+// Пример использования демо-ключа
 ADQuest.init({
-  siteKey: TEST_SITE_KEY,
+  siteKey: 'pk_demo_1234567890abcdef1234567890abcdef',
   container: document.getElementById('adquest-captcha')
 });
 ```
 
-<Details header="Важно о тестовых ключах">
+<Details header="Важно о демо-ключах">
 
-- Работают только на `localhost` и тестовых доменах
-- Не используйте в production
+**Демо-ключи предназначены только для тестирования:**
+- Работают на любом домене (включая localhost)
 - Всегда показывают тестовую рекламу
-- Токены не проходят полную валидацию
+- Токены проходят базовую валидацию
+- **НЕ используйте в production!**
+
+**Для production получите реальные ключи:**
+1. Зарегистрируйтесь на [dashboard.ad-quest.ru](https://dashboard.ad-quest.ru)
+2. Добавьте ваш домен
+3. Получите уникальные Public Key и Secret Key
+4. Используйте их в вашем приложении
 
 </Details>
 
 ## Переменные окружения
 
-Рекомендуется хранить Site Key в переменных окружения:
+Рекомендуется хранить ключи в переменных окружения:
 
+**Для фронтенда (.env):**
+```bash
+# Public Key - безопасно использовать на клиенте
+NEXT_PUBLIC_ADQUEST_SITE_KEY=pk_your_public_key_here
+```
+
+**Для бэкенда (.env):**
+```bash
+# Secret Key - ТОЛЬКО для сервера, никогда не отправляйте на клиент!
+ADQUEST_SECRET_KEY=sk_secret_your_secret_key_here
+ADQUEST_API_URL=https://api.ad-quest.ru
+```
+
+**Использование в коде:**
 ```javascript
-// .env
-ADQUEST_SITE_KEY=your_site_key_here
-
-// В коде
+// Фронтенд
 ADQuest.init({
-  siteKey: process.env.ADQUEST_SITE_KEY,
+  siteKey: process.env.NEXT_PUBLIC_ADQUEST_SITE_KEY,
   container: document.getElementById('adquest-captcha')
 });
+
+// Бэкенд (Node.js)
+const secretKey = process.env.ADQUEST_SECRET_KEY;
 ```
 
 ## Следующие шаги

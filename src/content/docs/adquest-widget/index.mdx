@@ -41,10 +41,11 @@ ADQuest Widget объединяет защиту от ботов и монети
 <!-- 4. Инициализируйте виджет -->
 <script>
 ADQuest.init({
-  siteKey: 'YOUR_SITE_KEY',
+  siteKey: 'pk_demo_1234567890abcdef1234567890abcdef', // Демо-ключ для тестирования
   container: document.getElementById('adquest-captcha'),
   onSuccess: (token) => {
     console.log('Токен:', token);
+    // Отправьте токен на ваш сервер для проверки
   }
 });
 </script>

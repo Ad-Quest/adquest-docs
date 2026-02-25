@@ -229,29 +229,6 @@ metaTags.map((attrs) => {
 		attrs,
 	});
 });
-
-// Add captcha check script at the beginning of head
-head.unshift({
-	tag: "script",
-	attrs: {},
-	content: `
-		(function() {
-			if (window.location.pathname === '/captcha' || window.location.pathname === '/captcha/') {
-				return;
-			}
-			
-			var passed = localStorage.getItem('adquest_captcha_passed');
-			var time = localStorage.getItem('adquest_captcha_time');
-			var now = Date.now();
-			var oneDay = 24 * 60 * 60 * 1000;
-			
-			if (!passed || !time || (now - parseInt(time)) > oneDay) {
-				var currentUrl = encodeURIComponent(window.location.pathname + window.location.search);
-				window.location.replace('/captcha?redirect=' + currentUrl);
-			}
-		})();
-	`,
-});
 ---
 
 <script src="src/scripts/footnotes.ts"></script>

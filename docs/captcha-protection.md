@@ -26,7 +26,7 @@
 
 ```javascript
 {
-  siteKey: 'pk_25c12f55047e6a52a325efa13616579a',
+  siteKey: 'pk_b7d2f850b11c72cbe090f2d96ea809ad',
   apiBaseURL: 'https://api.ad-quest.ru'
 }
 ```
